@@ -1,0 +1,281 @@
+// =============================================================================
+// JobScout Database Schema
+// =============================================================================
+// PostgreSQL database schema using Prisma ORM
+// Optimized for job search with full-text search support
+// =============================================================================
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL") // For migrations with Neon pooled connections
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearchPostgres"]
+}
+
+// =============================================================================
+// COMPANY
+// =============================================================================
+// Represents an employer/company that posts jobs
+// Identified by their ATS career page URL
+
+model Company {
+  id            String       @id @default(cuid())
+  name          String
+  slug          String       @unique
+  logo          String?      @db.Text
+  description   String?      @db.Text
+  website       String?
+  careerPageUrl String       @unique
+  industry      String?
+  size          CompanySize?
+  foundedYear   Int?
+  headquarters  String?
+  atsType       JobSource
+
+  // Relations
+  jobs   Job[]
+  scrapes Scrape[]
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Indexes
+  @@index([atsType])
+  @@index([industry])
+  @@index([name])
+
+  @@map("companies")
+}
+
+enum CompanySize {
+  SIZE_1_10       @map("1-10")
+  SIZE_11_50      @map("11-50")
+  SIZE_51_200     @map("51-200")
+  SIZE_201_500    @map("201-500")
+  SIZE_501_1000   @map("501-1000")
+  SIZE_1001_5000  @map("1001-5000")
+  SIZE_5000_PLUS  @map("5000+")
+}
+
+// =============================================================================
+// JOB
+// =============================================================================
+// Core job posting entity
+// Contains all searchable and filterable fields
+
+model Job {
+  id         String @id @default(cuid())
+  externalId String // ID from the source ATS
+  source     JobSource
+
+  // Core fields
+  title       String
+  description String  @db.Text
+  requirements String[]
+  
+  // Location
+  location     String
+  isRemote     Boolean      @default(false)
+  locationType LocationType
+
+  // Employment details
+  employmentType  EmploymentType
+  experienceLevel ExperienceLevel?
+  department      String?
+
+  // Compensation (flattened for query efficiency)
+  salaryMin      Int?
+  salaryMax      Int?
+  salaryCurrency String       @default("USD")
+  salaryPeriod   SalaryPeriod @default(YEARLY)
+
+  // Skills & tags
+  skills String[]
+
+  // Dates
+  postedAt   DateTime
+  expiresAt  DateTime?
+  lastSeenAt DateTime  @default(now())
+
+  // Source reference
+  sourceUrl String @db.Text
+
+  // Company relation
+  companyId String
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Unique constraint: prevent duplicate jobs from same source
+  @@unique([externalId, source], name: "unique_job_per_source")
+
+  // Performance indexes for common queries
+  @@index([companyId])
+  @@index([source])
+  @@index([postedAt(sort: Desc)])
+  @@index([lastSeenAt(sort: Desc)])
+  @@index([isRemote])
+  @@index([locationType])
+  @@index([employmentType])
+  @@index([experienceLevel])
+  @@index([salaryMin])
+  @@index([salaryMax])
+
+  // Composite indexes for filtered searches
+  @@index([isRemote, employmentType, postedAt(sort: Desc)], name: "idx_job_remote_type_posted")
+  @@index([locationType, employmentType, experienceLevel], name: "idx_job_filters")
+  @@index([source, postedAt(sort: Desc)], name: "idx_job_source_posted")
+
+  // Location search (case-insensitive via application-level normalization)
+  @@index([location])
+
+  @@map("jobs")
+}
+
+enum JobSource {
+  GREENHOUSE      @map("greenhouse")
+  LEVER           @map("lever")
+  ASHBY           @map("ashby")
+  WORKABLE        @map("workable")
+  SMARTRECRUITERS @map("smartrecruiters")
+}
+
+enum LocationType {
+  REMOTE @map("remote")
+  HYBRID @map("hybrid")
+  ONSITE @map("onsite")
+}
+
+enum EmploymentType {
+  FULL_TIME  @map("full-time")
+  PART_TIME  @map("part-time")
+  CONTRACT   @map("contract")
+  INTERNSHIP @map("internship")
+}
+
+enum ExperienceLevel {
+  ENTRY     @map("entry")
+  MID       @map("mid")
+  SENIOR    @map("senior")
+  STAFF     @map("staff")
+  PRINCIPAL @map("principal")
+}
+
+enum SalaryPeriod {
+  YEARLY  @map("yearly")
+  MONTHLY @map("monthly")
+  HOURLY  @map("hourly")
+}
+
+// =============================================================================
+// SCRAPE
+// =============================================================================
+// Audit trail for scraping operations
+// Tracks what was scraped, when, and outcomes
+
+model Scrape {
+  id     String       @id @default(cuid())
+  source JobSource
+  status ScrapeStatus
+
+  // Optional company scope (null = all companies for source)
+  companyId String?
+  company   Company? @relation(fields: [companyId], references: [id], onDelete: SetNull)
+
+  // Metrics
+  jobsFound   Int @default(0)
+  jobsCreated Int @default(0)
+  jobsUpdated Int @default(0)
+  jobsRemoved Int @default(0)
+
+  // Error tracking
+  errors Json[] @default([])
+
+  // Timing
+  startedAt   DateTime  @default(now())
+  completedAt DateTime?
+  durationMs  Int?
+
+  // Metadata
+  metadata Json? // Additional scrape-specific data
+
+  @@index([source, startedAt(sort: Desc)], name: "idx_scrape_source_started")
+  @@index([companyId])
+  @@index([status])
+
+  @@map("scrapes")
+}
+
+enum ScrapeStatus {
+  PENDING
+  RUNNING
+  SUCCESS
+  PARTIAL // Some errors but completed
+  FAILED
+}
+
+// =============================================================================
+// SKILL (Normalized skill taxonomy)
+// =============================================================================
+// Optional: For skill normalization and autocomplete
+// Can be populated with canonical skill names
+
+model Skill {
+  id       String   @id @default(cuid())
+  name     String   @unique
+  slug     String   @unique
+  category String?  // e.g., "Programming Language", "Framework", "Tool"
+  aliases  String[] // Alternative names/spellings
+
+  createdAt DateTime @default(now())
+
+  @@index([category])
+  @@index([name])
+
+  @@map("skills")
+}
+
+// =============================================================================
+// SAVED SEARCH (Future feature)
+// =============================================================================
+// For users to save their search criteria
+// Prepared for Phase 5+ features
+
+model SavedSearch {
+  id     String @id @default(cuid())
+  name   String
+  
+  // Search criteria stored as JSON
+  filters Json
+  
+  // Notification preferences
+  emailNotifications Boolean @default(false)
+  notificationFrequency NotificationFrequency @default(DAILY)
+  
+  // User identification (anonymous for now)
+  userToken String?
+  
+  // Tracking
+  lastExecutedAt DateTime?
+  resultCount    Int       @default(0)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userToken])
+
+  @@map("saved_searches")
+}
+
+enum NotificationFrequency {
+  REALTIME
+  DAILY
+  WEEKLY
+}
