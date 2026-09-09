@@ -1,26 +1,140 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useMemo, useCallback } from 'react'
 import Head from 'next/head'
-import { Search, MapPin, SlidersHorizontal, ArrowUpDown } from 'lucide-react'
+import { useRouter } from 'next/router'
+import { Search, MapPin, SlidersHorizontal, ArrowUpDown, AlertCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/Button'
-import { SearchInput, Input } from '@/components/ui/Input'
 import { Header, Footer } from '@/components/layout/Header'
 import { FilterSidebar, ActiveFiltersBar, type FilterGroup } from '@/components/layout/FilterSidebar'
 import { JobList, type Job } from '@/components/jobs/JobCard'
+import { useJobSearch, useFilters, formatLocationType, formatEmploymentType, formatExperienceLevel } from '@/hooks'
+import type { JobSearchParams, JobListItem } from '@/lib/api'
+
+/* ============================================
+   HELPERS
+   ============================================ */
+
+/**
+ * Map API job to component job format
+ */
+function mapApiJobToComponent(apiJob: JobListItem): Job {
+  const postedDate = new Date(apiJob.postedAt)
+  const now = new Date()
+  const diffMs = now.getTime() - postedDate.getTime()
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
+  const isNew = diffDays <= 1
+
+  return {
+    id: apiJob.id,
+    title: apiJob.title,
+    company: {
+      id: apiJob.company.id,
+      name: apiJob.company.name,
+      logo: apiJob.company.logo || undefined,
+    },
+    location: apiJob.location,
+    locationType: apiJob.locationType,
+    employmentType: apiJob.employmentType,
+    salaryMin: apiJob.salary?.min || undefined,
+    salaryMax: apiJob.salary?.max || undefined,
+    salaryCurrency: apiJob.salary?.currency || 'USD',
+    skills: apiJob.skills || [],
+    postedAt: apiJob.postedAt,
+    isNew,
+  }
+}
+
+/**
+ * Parse URL query into search params
+ */
+function parseQueryParams(query: Record<string, string | string[] | undefined>): {
+  searchParams: JobSearchParams
+  selectedFilters: Record<string, string[]>
+  sortBy: string
+} {
+  const toArray = (val: string | string[] | undefined): string[] => {
+    if (!val) return []
+    return Array.isArray(val) ? val : [val]
+  }
+
+  const sortBy = (query.sort as string) || 'postedAt'
+  const sortDir = (query.dir as string) === 'asc' ? 'asc' : 'desc'
+
+  const selectedFilters: Record<string, string[]> = {
+    'work-type': toArray(query.locationType),
+    employment: toArray(query.employmentType),
+    experience: toArray(query.experienceLevel),
+    skills: toArray(query.skills),
+  }
+
+  // Handle salary range
+  if (query.salaryMin || query.salaryMax) {
+    const salaryKey = getSalaryFilterKey(
+      query.salaryMin ? parseInt(query.salaryMin as string) : undefined,
+      query.salaryMax ? parseInt(query.salaryMax as string) : undefined
+    )
+    if (salaryKey) {
+      selectedFilters.salary = [salaryKey]
+    }
+  }
+
+  const searchParams: JobSearchParams = {
+    q: (query.q as string) || undefined,
+    location: (query.location as string) || undefined,
+    locationType: toArray(query.locationType).length > 0 ? toArray(query.locationType) : undefined,
+    employmentType: toArray(query.employmentType).length > 0 ? toArray(query.employmentType) : undefined,
+    experienceLevel: toArray(query.experienceLevel).length > 0 ? toArray(query.experienceLevel) : undefined,
+    skills: toArray(query.skills).length > 0 ? toArray(query.skills) : undefined,
+    salaryMin: query.salaryMin ? parseInt(query.salaryMin as string) : undefined,
+    salaryMax: query.salaryMax ? parseInt(query.salaryMax as string) : undefined,
+    companyId: (query.companyId as string) || undefined,
+    sortBy: sortBy as JobSearchParams['sortBy'],
+    sortDir: sortDir as JobSearchParams['sortDir'],
+    page: query.page ? parseInt(query.page as string) : 1,
+    limit: 20,
+  }
+
+  return { searchParams, selectedFilters, sortBy: `${sortBy}-${sortDir}` }
+}
+
+/**
+ * Get salary filter key from min/max values
+ */
+function getSalaryFilterKey(min?: number, max?: number): string | null {
+  if (!min && !max) return null
+  if (min && min >= 200000) return '200k+'
+  if (min && min >= 150000) return '150-200k'
+  if (min && min >= 100000) return '100-150k'
+  if (min && min >= 50000) return '50-100k'
+  return null
+}
+
+/**
+ * Get salary min/max from filter key
+ */
+function getSalaryRange(key: string): { min?: number; max?: number } {
+  switch (key) {
+    case '50-100k': return { min: 50000, max: 100000 }
+    case '100-150k': return { min: 100000, max: 150000 }
+    case '150-200k': return { min: 150000, max: 200000 }
+    case '200k+': return { min: 200000 }
+    default: return {}
+  }
+}
 
 /* ============================================
    FILTER CONFIG
    ============================================ */
 
-const filterGroups: FilterGroup[] = [
+const defaultFilterGroups: FilterGroup[] = [
   {
     id: 'work-type',
     label: 'Work Type',
     type: 'checkbox',
     options: [
-      { id: 'remote', label: 'Remote', count: 45231 },
-      { id: 'hybrid', label: 'Hybrid', count: 32145 },
-      { id: 'onsite', label: 'On-site', count: 28976 },
+      { id: 'remote', label: 'Remote' },
+      { id: 'hybrid', label: 'Hybrid' },
+      { id: 'onsite', label: 'On-site' },
     ],
   },
   {
@@ -28,9 +142,10 @@ const filterGroups: FilterGroup[] = [
     label: 'Employment Type',
     type: 'checkbox',
     options: [
-      { id: 'full-time', label: 'Full-time', count: 98234 },
-      { id: 'part-time', label: 'Part-time', count: 4532 },
-      { id: 'contract', label: 'Contract', count: 12453 },
+      { id: 'full-time', label: 'Full-time' },
+      { id: 'part-time', label: 'Part-time' },
+      { id: 'contract', label: 'Contract' },
+      { id: 'internship', label: 'Internship' },
     ],
   },
   {
@@ -38,10 +153,11 @@ const filterGroups: FilterGroup[] = [
     label: 'Experience Level',
     type: 'checkbox',
     options: [
-      { id: 'entry', label: 'Entry Level', count: 15432 },
-      { id: 'mid', label: 'Mid Level', count: 45231 },
-      { id: 'senior', label: 'Senior', count: 38765 },
-      { id: 'lead', label: 'Lead / Staff', count: 12453 },
+      { id: 'entry', label: 'Entry Level' },
+      { id: 'mid', label: 'Mid Level' },
+      { id: 'senior', label: 'Senior' },
+      { id: 'staff', label: 'Staff' },
+      { id: 'principal', label: 'Principal' },
     ],
   },
   {
@@ -49,171 +165,190 @@ const filterGroups: FilterGroup[] = [
     label: 'Salary Range',
     type: 'checkbox',
     options: [
-      { id: '50-100k', label: '$50K – $100K', count: 23456 },
-      { id: '100-150k', label: '$100K – $150K', count: 34567 },
-      { id: '150-200k', label: '$150K – $200K', count: 18765 },
-      { id: '200k+', label: '$200K+', count: 12453 },
-    ],
-  },
-  {
-    id: 'posted',
-    label: 'Date Posted',
-    type: 'radio',
-    options: [
-      { id: '24h', label: 'Last 24 hours', count: 5432 },
-      { id: '7d', label: 'Last 7 days', count: 23456 },
-      { id: '30d', label: 'Last 30 days', count: 67890 },
-      { id: 'all', label: 'All time' },
+      { id: '50-100k', label: '$50K – $100K' },
+      { id: '100-150k', label: '$100K – $150K' },
+      { id: '150-200k', label: '$150K – $200K' },
+      { id: '200k+', label: '$200K+' },
     ],
   },
 ]
 
 const filterLabels: Record<string, Record<string, string>> = {
   'work-type': { remote: 'Remote', hybrid: 'Hybrid', onsite: 'On-site' },
-  employment: { 'full-time': 'Full-time', 'part-time': 'Part-time', contract: 'Contract' },
-  experience: { entry: 'Entry', mid: 'Mid', senior: 'Senior', lead: 'Lead' },
+  employment: { 'full-time': 'Full-time', 'part-time': 'Part-time', contract: 'Contract', internship: 'Internship' },
+  experience: { entry: 'Entry', mid: 'Mid', senior: 'Senior', staff: 'Staff', principal: 'Principal' },
   salary: { '50-100k': '$50-100K', '100-150k': '$100-150K', '150-200k': '$150-200K', '200k+': '$200K+' },
-  posted: { '24h': '24h', '7d': '7 days', '30d': '30 days', all: 'All' },
+  skills: {},
 }
-
-/* ============================================
-   SAMPLE JOBS
-   ============================================ */
-
-const sampleJobs: Job[] = [
-  {
-    id: '1',
-    title: 'Senior Frontend Engineer',
-    company: { id: '1', name: 'Stripe' },
-    location: 'San Francisco, CA',
-    locationType: 'hybrid',
-    employmentType: 'full-time',
-    salaryMin: 180000,
-    salaryMax: 250000,
-    skills: ['React', 'TypeScript', 'GraphQL', 'Node.js', 'CSS'],
-    postedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
-    isFeatured: true,
-  },
-  {
-    id: '2',
-    title: 'Staff Software Engineer',
-    company: { id: '2', name: 'Airbnb' },
-    location: 'Remote (US)',
-    locationType: 'remote',
-    employmentType: 'full-time',
-    salaryMin: 200000,
-    salaryMax: 280000,
-    skills: ['Go', 'Kubernetes', 'AWS', 'Microservices', 'gRPC'],
-    postedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
-    isNew: true,
-  },
-  {
-    id: '3',
-    title: 'DevOps Engineer',
-    company: { id: '3', name: 'Datadog' },
-    location: 'New York, NY',
-    locationType: 'onsite',
-    employmentType: 'full-time',
-    salaryMin: 150000,
-    salaryMax: 200000,
-    skills: ['Kubernetes', 'Terraform', 'AWS', 'Python', 'Go'],
-    postedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
-  },
-  {
-    id: '4',
-    title: 'React Native Developer',
-    company: { id: '4', name: 'Discord' },
-    location: 'Remote',
-    locationType: 'remote',
-    employmentType: 'full-time',
-    salaryMin: 140000,
-    salaryMax: 180000,
-    skills: ['React Native', 'TypeScript', 'iOS', 'Android'],
-    postedAt: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000),
-  },
-  {
-    id: '5',
-    title: 'Machine Learning Engineer',
-    company: { id: '5', name: 'OpenAI' },
-    location: 'San Francisco, CA',
-    locationType: 'hybrid',
-    employmentType: 'full-time',
-    salaryMin: 250000,
-    salaryMax: 350000,
-    skills: ['Python', 'PyTorch', 'TensorFlow', 'NLP', 'LLMs'],
-    postedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
-    isFeatured: true,
-  },
-  {
-    id: '6',
-    title: 'Full Stack Developer',
-    company: { id: '6', name: 'Vercel' },
-    location: 'Remote (Worldwide)',
-    locationType: 'remote',
-    employmentType: 'full-time',
-    salaryMin: 150000,
-    salaryMax: 200000,
-    skills: ['Next.js', 'React', 'Node.js', 'PostgreSQL'],
-    postedAt: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000),
-  },
-  {
-    id: '7',
-    title: 'Backend Engineer',
-    company: { id: '7', name: 'Figma' },
-    location: 'San Francisco, CA',
-    locationType: 'hybrid',
-    employmentType: 'full-time',
-    salaryMin: 170000,
-    salaryMax: 220000,
-    skills: ['Go', 'Rust', 'PostgreSQL', 'Redis', 'gRPC'],
-    postedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-  },
-  {
-    id: '8',
-    title: 'Platform Engineer',
-    company: { id: '8', name: 'Notion' },
-    location: 'New York, NY',
-    locationType: 'onsite',
-    employmentType: 'full-time',
-    salaryMin: 180000,
-    salaryMax: 240000,
-    skills: ['Kubernetes', 'AWS', 'Terraform', 'Go'],
-    postedAt: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000),
-  },
-]
 
 /* ============================================
    SEARCH PAGE
    ============================================ */
 
 export default function SearchPage() {
+  const router = useRouter()
   const [isDarkMode, setIsDarkMode] = useState(false)
-  const [searchQuery, setSearchQuery] = useState('React Developer')
-  const [location, setLocation] = useState('')
-  const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({})
   const [isFilterOpen, setIsFilterOpen] = useState(false)
-  const [sortBy, setSortBy] = useState<string>('relevance')
+  
+  // Local input state (for debouncing)
+  const [searchInput, setSearchInput] = useState('')
+  const [locationInput, setLocationInput] = useState('')
 
+  // Parse URL params
+  const { searchParams, selectedFilters, sortBy: urlSortBy } = useMemo(
+    () => parseQueryParams(router.query),
+    [router.query]
+  )
+
+  const [sortBy, setSortBy] = useState(urlSortBy)
+
+  // Sync input with URL on mount/change
+  useEffect(() => {
+    setSearchInput((router.query.q as string) || '')
+    setLocationInput((router.query.location as string) || '')
+    setSortBy(urlSortBy)
+  }, [router.query.q, router.query.location, urlSortBy])
+
+  // Fetch data
+  const { data: jobsData, isLoading, error, isFetching } = useJobSearch(searchParams, router.isReady)
+  const { data: filtersData } = useFilters()
+
+  // Map jobs to component format
+  const jobs = useMemo(
+    () => jobsData?.data?.map(mapApiJobToComponent) || [],
+    [jobsData]
+  )
+
+  // Build filter groups with real counts if available
+  const filterGroups = useMemo(() => {
+    if (!filtersData) return defaultFilterGroups
+
+    return defaultFilterGroups.map(group => {
+      let options = group.options
+      
+      if (group.id === 'work-type' && filtersData.locationTypes) {
+        options = filtersData.locationTypes.map(opt => ({
+          id: opt.value,
+          label: opt.label,
+          count: opt.count,
+        }))
+      } else if (group.id === 'employment' && filtersData.employmentTypes) {
+        options = filtersData.employmentTypes.map(opt => ({
+          id: opt.value,
+          label: opt.label,
+          count: opt.count,
+        }))
+      } else if (group.id === 'experience' && filtersData.experienceLevels) {
+        options = filtersData.experienceLevels.map(opt => ({
+          id: opt.value,
+          label: opt.label,
+          count: opt.count,
+        }))
+      }
+
+      return { ...group, options }
+    })
+  }, [filtersData])
+
+  // Update URL with new params
+  const updateUrl = useCallback((updates: Partial<Record<string, string | string[] | number | undefined>>) => {
+    const newQuery = { ...router.query }
+    
+    Object.entries(updates).forEach(([key, value]) => {
+      if (value === undefined || value === '' || (Array.isArray(value) && value.length === 0)) {
+        delete newQuery[key]
+      } else {
+        newQuery[key] = Array.isArray(value) ? value : String(value)
+      }
+    })
+
+    // Reset to page 1 when filters change (unless explicitly setting page)
+    if (!('page' in updates)) {
+      delete newQuery.page
+    }
+
+    router.push({ pathname: '/search', query: newQuery }, undefined, { shallow: true })
+  }, [router])
+
+  // Handle search submit
+  const handleSearch = (e?: React.FormEvent) => {
+    e?.preventDefault()
+    updateUrl({
+      q: searchInput || undefined,
+      location: locationInput || undefined,
+    })
+  }
+
+  // Handle filter changes
   const handleFilterChange = (groupId: string, values: string[]) => {
-    setSelectedFilters((prev) => ({ ...prev, [groupId]: values }))
+    if (groupId === 'work-type') {
+      updateUrl({ locationType: values.length > 0 ? values : undefined })
+    } else if (groupId === 'employment') {
+      updateUrl({ employmentType: values.length > 0 ? values : undefined })
+    } else if (groupId === 'experience') {
+      updateUrl({ experienceLevel: values.length > 0 ? values : undefined })
+    } else if (groupId === 'salary') {
+      // Handle salary - use first selected value
+      const firstValue = values[0]
+      const salaryRange = firstValue ? getSalaryRange(firstValue) : {}
+      updateUrl({
+        salaryMin: salaryRange.min,
+        salaryMax: salaryRange.max,
+      })
+    } else if (groupId === 'skills') {
+      updateUrl({ skills: values.length > 0 ? values : undefined })
+    }
   }
 
+  // Handle removing a single filter
   const handleRemoveFilter = (groupId: string, value: string) => {
-    setSelectedFilters((prev) => ({
-      ...prev,
-      [groupId]: (prev[groupId] || []).filter((v) => v !== value),
-    }))
+    const currentValues = selectedFilters[groupId] || []
+    const newValues = currentValues.filter(v => v !== value)
+    handleFilterChange(groupId, newValues)
   }
 
-  const handleClearFilters = () => setSelectedFilters({})
+  // Handle clearing all filters
+  const handleClearFilters = () => {
+    updateUrl({
+      locationType: undefined,
+      employmentType: undefined,
+      experienceLevel: undefined,
+      salaryMin: undefined,
+      salaryMax: undefined,
+      skills: undefined,
+    })
+  }
 
-  const totalResults = 12453
+  // Handle sort change
+  const handleSortChange = (value: string) => {
+    setSortBy(value)
+    const [sort, dir] = value.split('-')
+    updateUrl({ sort, dir })
+  }
+
+  // Handle pagination
+  const handlePageChange = (page: number) => {
+    updateUrl({ page })
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  // Calculate pagination
+  const totalResults = jobsData?.meta?.total || 0
+  const currentPage = jobsData?.meta?.page || 1
+  const totalPages = jobsData?.meta?.totalPages || 1
+  const pageSize = jobsData?.meta?.pageSize || 20
+
   const activeFilterCount = Object.values(selectedFilters).flat().length
+
+  // Build page title
+  const pageTitle = searchParams.q 
+    ? `${searchParams.q} Jobs` 
+    : 'Search Jobs'
 
   return (
     <div className={cn(isDarkMode && 'dark')}>
       <Head>
-        <title>{searchQuery ? `${searchQuery} Jobs` : 'Search Jobs'} – JobScout</title>
+        <title>{pageTitle} - JobScout</title>
       </Head>
 
       <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950">
@@ -224,7 +359,7 @@ export default function SearchPage() {
             ========================================== */}
         <section className="sticky top-16 z-30 bg-neutral-0/95 dark:bg-neutral-900/95 backdrop-blur-lg border-b border-neutral-200 dark:border-neutral-800">
           <div className="container-main py-4">
-            <div className="flex flex-col md:flex-row gap-3">
+            <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-3">
               <div className="flex-1 relative">
                 <Search 
                   size={18} 
@@ -234,8 +369,8 @@ export default function SearchPage() {
                 <input
                   type="text"
                   placeholder="Job title, company, or keywords..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  value={searchInput}
+                  onChange={(e) => setSearchInput(e.target.value)}
                   className={cn(
                     'w-full h-11 pl-10 pr-4 rounded-lg',
                     'bg-neutral-0 dark:bg-neutral-800',
@@ -257,8 +392,8 @@ export default function SearchPage() {
                 <input
                   type="text"
                   placeholder="Location"
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
+                  value={locationInput}
+                  onChange={(e) => setLocationInput(e.target.value)}
                   className={cn(
                     'w-full h-11 pl-10 pr-4 rounded-lg',
                     'bg-neutral-0 dark:bg-neutral-800',
@@ -271,11 +406,11 @@ export default function SearchPage() {
                 />
               </div>
 
-              <Button variant="primary" size="lg">
+              <Button type="submit" variant="primary" size="lg">
                 <Search size={18} strokeWidth={2} />
                 <span className="hidden sm:inline">Search</span>
               </Button>
-            </div>
+            </form>
           </div>
         </section>
 
@@ -300,10 +435,15 @@ export default function SearchPage() {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
                 <div>
                   <h1 className="text-xl font-semibold text-neutral-900 dark:text-neutral-100">
-                    {searchQuery ? `"${searchQuery}"` : 'All Jobs'}
+                    {searchParams.q ? `"${searchParams.q}"` : 'All Jobs'}
                   </h1>
                   <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                    {totalResults.toLocaleString()} jobs found
+                    {isLoading ? (
+                      'Loading...'
+                    ) : (
+                      `${totalResults.toLocaleString()} job${totalResults !== 1 ? 's' : ''} found`
+                    )}
+                    {isFetching && !isLoading && ' • Updating...'}
                   </p>
                 </div>
 
@@ -328,7 +468,7 @@ export default function SearchPage() {
                   <div className="relative">
                     <select
                       value={sortBy}
-                      onChange={(e) => setSortBy(e.target.value)}
+                      onChange={(e) => handleSortChange(e.target.value)}
                       className={cn(
                         'h-9 pl-3 pr-8 rounded-lg appearance-none',
                         'bg-neutral-0 dark:bg-neutral-800',
@@ -338,10 +478,12 @@ export default function SearchPage() {
                         'cursor-pointer'
                       )}
                     >
-                      <option value="relevance">Most Relevant</option>
-                      <option value="recent">Most Recent</option>
-                      <option value="salary-high">Highest Salary</option>
-                      <option value="salary-low">Lowest Salary</option>
+                      <option value="postedAt-desc">Most Recent</option>
+                      <option value="postedAt-asc">Oldest First</option>
+                      <option value="salary-desc">Highest Salary</option>
+                      <option value="salary-asc">Lowest Salary</option>
+                      <option value="title-asc">Title A-Z</option>
+                      <option value="title-desc">Title Z-A</option>
                     </select>
                     <ArrowUpDown 
                       size={14} 
@@ -361,44 +503,86 @@ export default function SearchPage() {
                 className="mb-4"
               />
 
-              {/* Job list */}
-              <JobList
-                jobs={sampleJobs}
-                onJobClick={(id) => window.location.href = `/job/${id}`}
-                onBookmark={(id) => console.log('Bookmark:', id)}
-              />
-
-              {/* Pagination */}
-              <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                  Showing 1–20 of {totalResults.toLocaleString()} jobs
-                </p>
-                <div className="flex items-center gap-1">
-                  <Button variant="secondary" size="sm" disabled>
-                    Previous
-                  </Button>
-                  {[1, 2, 3].map((page) => (
-                    <button
-                      key={page}
-                      className={cn(
-                        'w-9 h-9 rounded-lg text-sm font-medium transition-colors',
-                        page === 1
-                          ? 'bg-brand-600 text-white'
-                          : 'text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800'
-                      )}
-                    >
-                      {page}
-                    </button>
-                  ))}
-                  <span className="px-2 text-neutral-400">...</span>
-                  <button className="w-9 h-9 rounded-lg text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors">
-                    623
-                  </button>
-                  <Button variant="secondary" size="sm">
-                    Next
+              {/* Error state */}
+              {error && (
+                <div className="flex flex-col items-center justify-center py-16 text-center">
+                  <div className="w-14 h-14 mb-4 rounded-full bg-error-50 dark:bg-error-500/10 flex items-center justify-center">
+                    <AlertCircle className="w-6 h-6 text-error-600 dark:text-error-400" strokeWidth={1.5} />
+                  </div>
+                  <h3 className="text-lg font-medium text-neutral-900 dark:text-neutral-100 mb-1">
+                    Unable to load jobs
+                  </h3>
+                  <p className="text-sm text-neutral-500 dark:text-neutral-400 max-w-sm mb-4">
+                    There was an error fetching jobs. Please try again.
+                  </p>
+                  <Button 
+                    variant="secondary" 
+                    size="sm"
+                    onClick={() => router.reload()}
+                  >
+                    Try again
                   </Button>
                 </div>
-              </div>
+              )}
+
+              {/* Job list */}
+              {!error && (
+                <JobList
+                  jobs={jobs}
+                  isLoading={isLoading}
+                  loadingCount={5}
+                  onJobClick={(id) => router.push(`/job/${id}`)}
+                  onBookmark={(id) => console.log('Bookmark:', id)}
+                />
+              )}
+
+              {/* Pagination */}
+              {!isLoading && !error && totalPages > 1 && (
+                <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <p className="text-sm text-neutral-500 dark:text-neutral-400">
+                    Showing {((currentPage - 1) * pageSize) + 1}–{Math.min(currentPage * pageSize, totalResults)} of {totalResults.toLocaleString()} jobs
+                  </p>
+                  <div className="flex items-center gap-1">
+                    <Button 
+                      variant="secondary" 
+                      size="sm" 
+                      disabled={currentPage <= 1}
+                      onClick={() => handlePageChange(currentPage - 1)}
+                    >
+                      Previous
+                    </Button>
+                    
+                    {/* Page numbers */}
+                    {generatePageNumbers(currentPage, totalPages).map((page, idx) => 
+                      page === '...' ? (
+                        <span key={`ellipsis-${idx}`} className="px-2 text-neutral-400">...</span>
+                      ) : (
+                        <button
+                          key={page}
+                          onClick={() => handlePageChange(page as number)}
+                          className={cn(
+                            'w-9 h-9 rounded-lg text-sm font-medium transition-colors',
+                            page === currentPage
+                              ? 'bg-brand-600 text-white'
+                              : 'text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800'
+                          )}
+                        >
+                          {page}
+                        </button>
+                      )
+                    )}
+
+                    <Button 
+                      variant="secondary" 
+                      size="sm"
+                      disabled={currentPage >= totalPages}
+                      onClick={() => handlePageChange(currentPage + 1)}
+                    >
+                      Next
+                    </Button>
+                  </div>
+                </div>
+              )}
             </main>
           </div>
         </div>
@@ -407,4 +591,43 @@ export default function SearchPage() {
       </div>
     </div>
   )
+}
+
+/**
+ * Generate page numbers for pagination
+ */
+function generatePageNumbers(current: number, total: number): (number | '...')[] {
+  if (total <= 7) {
+    return Array.from({ length: total }, (_, i) => i + 1)
+  }
+
+  const pages: (number | '...')[] = []
+  
+  // Always show first page
+  pages.push(1)
+
+  if (current > 3) {
+    pages.push('...')
+  }
+
+  // Show pages around current
+  const start = Math.max(2, current - 1)
+  const end = Math.min(total - 1, current + 1)
+  
+  for (let i = start; i <= end; i++) {
+    if (!pages.includes(i)) {
+      pages.push(i)
+    }
+  }
+
+  if (current < total - 2) {
+    pages.push('...')
+  }
+
+  // Always show last page
+  if (!pages.includes(total)) {
+    pages.push(total)
+  }
+
+  return pages
 }

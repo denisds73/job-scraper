@@ -162,7 +162,7 @@ Tag.displayName = 'Tag'
  */
 
 export type JobLocationType = 'remote' | 'hybrid' | 'onsite'
-export type JobEmploymentType = 'full-time' | 'part-time' | 'contract'
+export type JobEmploymentType = 'full-time' | 'part-time' | 'contract' | 'internship'
 
 const locationTypeConfig: Record<JobLocationType, { label: string; icon: React.ElementType; className: string }> = {
   remote: {
@@ -197,6 +197,11 @@ const employmentTypeConfig: Record<JobEmploymentType, { label: string; icon: Rea
     label: 'Contract',
     icon: FileText,
     className: 'bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400',
+  },
+  internship: {
+    label: 'Internship',
+    icon: Timer,
+    className: 'bg-purple-50 text-purple-700 dark:bg-purple-500/10 dark:text-purple-400',
   },
 }
 

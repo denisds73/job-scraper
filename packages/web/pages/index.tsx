@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import { 
   Search, 
   ArrowRight, 
@@ -23,10 +24,46 @@ import { SearchInput } from '@/components/ui/Input'
 import { Tag } from '@/components/ui/Badge'
 import { Card } from '@/components/ui/Card'
 import { Header, Footer } from '@/components/layout/Header'
-import { JobList, type Job } from '@/components/jobs/JobCard'
+import { JobList, JobCardSkeleton, type Job } from '@/components/jobs/JobCard'
+import { useRecentJobs, useTopCompanies, formatSalary } from '@/hooks'
+import type { JobListItem, CompanyListItem } from '@/lib/api'
 
 /* ============================================
-   SAMPLE DATA
+   HELPERS
+   ============================================ */
+
+/**
+ * Map API job to component job format
+ */
+function mapApiJobToComponent(apiJob: JobListItem): Job {
+  const postedDate = new Date(apiJob.postedAt)
+  const now = new Date()
+  const diffMs = now.getTime() - postedDate.getTime()
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
+  const isNew = diffDays <= 1
+
+  return {
+    id: apiJob.id,
+    title: apiJob.title,
+    company: {
+      id: apiJob.company.id,
+      name: apiJob.company.name,
+      logo: apiJob.company.logo || undefined,
+    },
+    location: apiJob.location,
+    locationType: apiJob.locationType,
+    employmentType: apiJob.employmentType,
+    salaryMin: apiJob.salary?.min || undefined,
+    salaryMax: apiJob.salary?.max || undefined,
+    salaryCurrency: apiJob.salary?.currency || 'USD',
+    skills: apiJob.skills || [],
+    postedAt: apiJob.postedAt,
+    isNew,
+  }
+}
+
+/* ============================================
+   STATIC DATA
    ============================================ */
 
 const popularSearches = [
@@ -38,72 +75,15 @@ const popularSearches = [
   'Product Manager',
 ]
 
-const stats = [
-  { label: 'Active Jobs', value: '125K+', icon: Briefcase },
-  { label: 'Companies', value: '8,500+', icon: Building2 },
-  { label: 'Job Seekers', value: '2M+', icon: Users },
-  { label: 'Hired This Month', value: '12K+', icon: TrendingUp },
-]
-
 const categories = [
-  { name: 'Frontend', icon: Code, count: 12453, color: 'text-blue-600 bg-blue-50 dark:bg-blue-900/20' },
-  { name: 'Backend', icon: Database, count: 8932, color: 'text-green-600 bg-green-50 dark:bg-green-900/20' },
-  { name: 'DevOps', icon: Cloud, count: 4532, color: 'text-orange-600 bg-orange-50 dark:bg-orange-900/20' },
-  { name: 'Mobile', icon: Smartphone, count: 4123, color: 'text-purple-600 bg-purple-50 dark:bg-purple-900/20' },
-  { name: 'Data', icon: BarChart3, count: 5621, color: 'text-cyan-600 bg-cyan-50 dark:bg-cyan-900/20' },
-  { name: 'ML/AI', icon: Cpu, count: 3421, color: 'text-pink-600 bg-pink-50 dark:bg-pink-900/20' },
-  { name: 'Design', icon: Palette, count: 2891, color: 'text-amber-600 bg-amber-50 dark:bg-amber-900/20' },
-  { name: 'Security', icon: Shield, count: 1876, color: 'text-red-600 bg-red-50 dark:bg-red-900/20' },
-]
-
-const featuredCompanies = [
-  { name: 'Stripe', jobs: 234 },
-  { name: 'Airbnb', jobs: 189 },
-  { name: 'Vercel', jobs: 156 },
-  { name: 'Figma', jobs: 142 },
-  { name: 'Linear', jobs: 98 },
-  { name: 'Notion', jobs: 87 },
-]
-
-const featuredJobs: Job[] = [
-  {
-    id: '1',
-    title: 'Senior Frontend Engineer',
-    company: { id: '1', name: 'Stripe' },
-    location: 'San Francisco, CA',
-    locationType: 'hybrid',
-    employmentType: 'full-time',
-    salaryMin: 180000,
-    salaryMax: 250000,
-    skills: ['React', 'TypeScript', 'GraphQL', 'Node.js'],
-    postedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
-    isFeatured: true,
-  },
-  {
-    id: '2',
-    title: 'Staff Software Engineer',
-    company: { id: '2', name: 'Airbnb' },
-    location: 'Remote',
-    locationType: 'remote',
-    employmentType: 'full-time',
-    salaryMin: 200000,
-    salaryMax: 280000,
-    skills: ['Go', 'Kubernetes', 'AWS', 'Microservices'],
-    postedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
-    isNew: true,
-  },
-  {
-    id: '3',
-    title: 'Platform Engineer',
-    company: { id: '3', name: 'Vercel' },
-    location: 'Remote',
-    locationType: 'remote',
-    employmentType: 'full-time',
-    salaryMin: 150000,
-    salaryMax: 200000,
-    skills: ['Node.js', 'Rust', 'Edge Computing', 'CDN'],
-    postedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
-  },
+  { name: 'Frontend', icon: Code, skill: 'React', color: 'text-blue-600 bg-blue-50 dark:bg-blue-900/20' },
+  { name: 'Backend', icon: Database, skill: 'Node.js', color: 'text-green-600 bg-green-50 dark:bg-green-900/20' },
+  { name: 'DevOps', icon: Cloud, skill: 'Kubernetes', color: 'text-orange-600 bg-orange-50 dark:bg-orange-900/20' },
+  { name: 'Mobile', icon: Smartphone, skill: 'React Native', color: 'text-purple-600 bg-purple-50 dark:bg-purple-900/20' },
+  { name: 'Data', icon: BarChart3, skill: 'Python', color: 'text-cyan-600 bg-cyan-50 dark:bg-cyan-900/20' },
+  { name: 'ML/AI', icon: Cpu, skill: 'Machine Learning', color: 'text-pink-600 bg-pink-50 dark:bg-pink-900/20' },
+  { name: 'Design', icon: Palette, skill: 'Figma', color: 'text-amber-600 bg-amber-50 dark:bg-amber-900/20' },
+  { name: 'Security', icon: Shield, skill: 'Security', color: 'text-red-600 bg-red-50 dark:bg-red-900/20' },
 ]
 
 /* ============================================
@@ -111,18 +91,45 @@ const featuredJobs: Job[] = [
    ============================================ */
 
 export default function HomePage() {
+  const router = useRouter()
   const [searchQuery, setSearchQuery] = useState('')
   const [isDarkMode, setIsDarkMode] = useState(false)
 
+  // Fetch real data
+  const { data: jobsData, isLoading: isLoadingJobs, error: jobsError } = useRecentJobs(6)
+  const { data: topCompanies, isLoading: isLoadingCompanies } = useTopCompanies(6)
+
+  // Map API jobs to component format
+  const featuredJobs = jobsData?.data?.map(mapApiJobToComponent) || []
+  
+  // Calculate stats from real data
+  const totalJobs = jobsData?.meta?.total || 0
+  const totalCompanies = topCompanies?.length || 0
+
+  const stats = [
+    { label: 'Active Jobs', value: totalJobs > 0 ? totalJobs.toLocaleString() : '...', icon: Briefcase },
+    { label: 'Companies', value: totalCompanies > 0 ? totalCompanies.toLocaleString() : '...', icon: Building2 },
+    { label: 'Updated Daily', value: '24/7', icon: TrendingUp },
+    { label: 'Free Forever', value: '$0', icon: Users },
+  ]
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
-    window.location.href = `/search?q=${encodeURIComponent(searchQuery)}`
+    router.push(`/search?q=${encodeURIComponent(searchQuery)}`)
+  }
+
+  const handleQuickSearch = (term: string) => {
+    router.push(`/search?q=${encodeURIComponent(term)}`)
+  }
+
+  const handleCategoryClick = (skill: string) => {
+    router.push(`/search?skills=${encodeURIComponent(skill)}`)
   }
 
   return (
     <div className={cn(isDarkMode && 'dark')}>
       <Head>
-        <title>JobScout – Find Your Next Role in Tech</title>
+        <title>JobScout - Find Your Next Role in Tech</title>
         <meta name="description" content="Discover thousands of tech jobs from top companies. Filter by salary, location, and skills." />
       </Head>
 
@@ -153,7 +160,7 @@ export default function HomePage() {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-500 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-600"></span>
                 </span>
-                125,000+ jobs available now
+                {totalJobs > 0 ? `${totalJobs.toLocaleString()} jobs available` : 'Jobs from top tech companies'}
               </div>
 
               {/* Heading */}
@@ -195,10 +202,7 @@ export default function HomePage() {
                     variant="outline"
                     size="sm"
                     interactive
-                    onClick={() => {
-                      setSearchQuery(term)
-                      window.location.href = `/search?q=${encodeURIComponent(term)}`
-                    }}
+                    onClick={() => handleQuickSearch(term)}
                   >
                     {term}
                   </Tag>
@@ -239,27 +243,37 @@ export default function HomePage() {
           <div className="flex items-end justify-between mb-8">
             <div>
               <h2 className="text-2xl md:text-3xl font-bold text-neutral-900 dark:text-neutral-50 mb-2 tracking-tight">
-                Featured opportunities
+                Latest opportunities
               </h2>
               <p className="text-neutral-500 dark:text-neutral-400">
-                Hand-picked roles from top companies
+                Fresh roles from top companies
               </p>
             </div>
             <Button 
               variant="ghost" 
               size="sm"
               rightIcon={<ArrowRight size={16} strokeWidth={2} />}
-              onClick={() => window.location.href = '/search'}
+              onClick={() => router.push('/search')}
             >
               View all jobs
             </Button>
           </div>
 
-          <JobList
-            jobs={featuredJobs}
-            onJobClick={(id) => window.location.href = `/job/${id}`}
-            onBookmark={(id) => console.log('Bookmark:', id)}
-          />
+          {jobsError ? (
+            <div className="text-center py-12">
+              <p className="text-neutral-500 dark:text-neutral-400">
+                Unable to load jobs. Please try again later.
+              </p>
+            </div>
+          ) : (
+            <JobList
+              jobs={featuredJobs}
+              isLoading={isLoadingJobs}
+              loadingCount={3}
+              onJobClick={(id) => router.push(`/job/${id}`)}
+              onBookmark={(id) => console.log('Bookmark:', id)}
+            />
+          )}
         </section>
 
         {/* ==========================================
@@ -285,7 +299,7 @@ export default function HomePage() {
                     interactive
                     padding="md"
                     className="group"
-                    onClick={() => window.location.href = `/search?category=${category.name.toLowerCase()}`}
+                    onClick={() => handleCategoryClick(category.skill)}
                   >
                     <div className="flex items-center gap-3">
                       <div className={cn(
@@ -299,7 +313,7 @@ export default function HomePage() {
                           {category.name}
                         </p>
                         <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                          {category.count.toLocaleString()} jobs
+                          {category.skill}
                         </p>
                       </div>
                       <ChevronRight 
@@ -329,33 +343,64 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
-            {featuredCompanies.map((company) => (
-              <Card
-                key={company.name}
-                interactive
-                padding="md"
-                className="text-center group"
-              >
-                <div className="w-12 h-12 mx-auto mb-3 rounded-xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center border border-neutral-200/50 dark:border-neutral-700/50">
-                  <span className="text-lg font-bold text-neutral-400 dark:text-neutral-500">
-                    {company.name.charAt(0)}
-                  </span>
-                </div>
-                <p className="font-semibold text-neutral-900 dark:text-neutral-100 mb-0.5 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
-                  {company.name}
-                </p>
-                <p className="text-sm text-brand-600 dark:text-brand-400">
-                  {company.jobs} jobs
-                </p>
-              </Card>
-            ))}
+            {isLoadingCompanies ? (
+              // Loading skeletons for companies
+              Array.from({ length: 6 }).map((_, i) => (
+                <Card key={i} padding="md" className="text-center">
+                  <div className="w-12 h-12 mx-auto mb-3 rounded-xl skeleton" />
+                  <div className="h-4 w-20 mx-auto mb-1 skeleton rounded" />
+                  <div className="h-3 w-12 mx-auto skeleton rounded" />
+                </Card>
+              ))
+            ) : topCompanies && topCompanies.length > 0 ? (
+              topCompanies.map((company) => (
+                <Card
+                  key={company.id}
+                  interactive
+                  padding="md"
+                  className="text-center group"
+                  onClick={() => router.push(`/search?companyId=${company.id}`)}
+                >
+                  <div className="w-12 h-12 mx-auto mb-3 rounded-xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center border border-neutral-200/50 dark:border-neutral-700/50 overflow-hidden">
+                    {company.logo ? (
+                      <img
+                        src={company.logo}
+                        alt={`${company.name} logo`}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <span className="text-lg font-bold text-neutral-400 dark:text-neutral-500">
+                        {company.name.charAt(0)}
+                      </span>
+                    )}
+                  </div>
+                  <p className="font-semibold text-neutral-900 dark:text-neutral-100 mb-0.5 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors truncate">
+                    {company.name}
+                  </p>
+                  <p className="text-sm text-brand-600 dark:text-brand-400">
+                    {company.jobCount} {company.jobCount === 1 ? 'job' : 'jobs'}
+                  </p>
+                </Card>
+              ))
+            ) : (
+              <div className="col-span-full text-center py-8">
+                <p className="text-neutral-500 dark:text-neutral-400">No companies available</p>
+              </div>
+            )}
           </div>
 
-          <div className="text-center mt-8">
-            <Button variant="secondary" size="md" rightIcon={<ArrowRight size={16} />}>
-              View all companies
-            </Button>
-          </div>
+          {topCompanies && topCompanies.length > 0 && (
+            <div className="text-center mt-8">
+              <Button 
+                variant="secondary" 
+                size="md" 
+                rightIcon={<ArrowRight size={16} />}
+                onClick={() => router.push('/search')}
+              >
+                View all companies
+              </Button>
+            </div>
+          )}
         </section>
 
         {/* ==========================================
@@ -367,21 +412,23 @@ export default function HomePage() {
               Ready to find your next opportunity?
             </h2>
             <p className="text-brand-100 mb-8 max-w-lg mx-auto">
-              Create a free account to save jobs, set alerts, and get personalized recommendations.
+              Start browsing thousands of tech jobs from top companies - completely free.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button
                 size="lg"
                 className="bg-white text-brand-700 hover:bg-neutral-100"
+                onClick={() => router.push('/search')}
               >
-                Create free account
+                Browse all jobs
               </Button>
               <Button
                 variant="ghost"
                 size="lg"
                 className="text-white border border-white/20 hover:bg-white/10"
+                onClick={() => router.push('/search?locationType=remote')}
               >
-                Learn more
+                Remote jobs only
               </Button>
             </div>
           </div>
