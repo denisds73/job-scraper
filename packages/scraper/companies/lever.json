@@ -1,0 +1,25 @@
+{
+  "source": "lever",
+  "companies": [
+    { "slug": "Netflix", "name": "Netflix" },
+    { "slug": "github", "name": "GitHub" },
+    { "slug": "twitch", "name": "Twitch" },
+    { "slug": "cloudflare", "name": "Cloudflare" },
+    { "slug": "scale", "name": "Scale AI" },
+    { "slug": "anduril", "name": "Anduril" },
+    { "slug": "reddit", "name": "Reddit" },
+    { "slug": "postman", "name": "Postman" },
+    { "slug": "loom", "name": "Loom" },
+    { "slug": "webflow", "name": "Webflow" },
+    { "slug": "mux", "name": "Mux" },
+    { "slug": "pinecone", "name": "Pinecone" },
+    { "slug": "fly", "name": "Fly.io" },
+    { "slug": "hashicorp", "name": "HashiCorp" },
+    { "slug": "benchling", "name": "Benchling" },
+    { "slug": "segment", "name": "Segment" },
+    { "slug": "firehydrant", "name": "FireHydrant" },
+    { "slug": "gitpod", "name": "Gitpod" },
+    { "slug": "posthog", "name": "PostHog" },
+    { "slug": "replit", "name": "Replit" }
+  ]
+}

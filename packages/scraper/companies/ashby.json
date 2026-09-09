@@ -1,0 +1,20 @@
+{
+  "source": "ashby",
+  "companies": [
+    { "slug": "linear", "name": "Linear" },
+    { "slug": "vercel", "name": "Vercel" },
+    { "slug": "supabase", "name": "Supabase" },
+    { "slug": "railway", "name": "Railway" },
+    { "slug": "dbt-labs", "name": "dbt Labs" },
+    { "slug": "planetscale", "name": "PlanetScale" },
+    { "slug": "neon", "name": "Neon" },
+    { "slug": "resend", "name": "Resend" },
+    { "slug": "cal", "name": "Cal.com" },
+    { "slug": "mintlify", "name": "Mintlify" },
+    { "slug": "axiom", "name": "Axiom" },
+    { "slug": "raycast", "name": "Raycast" },
+    { "slug": "highlight", "name": "Highlight" },
+    { "slug": "inngest", "name": "Inngest" },
+    { "slug": "stytch", "name": "Stytch" }
+  ]
+}

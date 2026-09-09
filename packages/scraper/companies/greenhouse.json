@@ -1,0 +1,25 @@
+{
+  "source": "greenhouse",
+  "companies": [
+    { "slug": "stripe", "name": "Stripe" },
+    { "slug": "figma", "name": "Figma" },
+    { "slug": "notion", "name": "Notion" },
+    { "slug": "airbnb", "name": "Airbnb" },
+    { "slug": "openai", "name": "OpenAI" },
+    { "slug": "anthropic", "name": "Anthropic" },
+    { "slug": "plaid", "name": "Plaid" },
+    { "slug": "coinbase", "name": "Coinbase" },
+    { "slug": "datadog", "name": "Datadog" },
+    { "slug": "airtable", "name": "Airtable" },
+    { "slug": "brex", "name": "Brex" },
+    { "slug": "gusto", "name": "Gusto" },
+    { "slug": "ramp", "name": "Ramp" },
+    { "slug": "mercury", "name": "Mercury" },
+    { "slug": "retool", "name": "Retool" },
+    { "slug": "dropbox", "name": "Dropbox" },
+    { "slug": "asana", "name": "Asana" },
+    { "slug": "doordash", "name": "DoorDash" },
+    { "slug": "instacart", "name": "Instacart" },
+    { "slug": "robinhood", "name": "Robinhood" }
+  ]
+}
