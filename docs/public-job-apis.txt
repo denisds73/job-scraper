@@ -1,0 +1,281 @@
+================================================================================
+                        PUBLIC JOB APIs - REFERENCE LIST
+                        No Authentication Required (Unless Noted)
+================================================================================
+
+Last Updated: 2026-09-09
+
+================================================================================
+TIER 1: ATS PLATFORMS (PRIMARY SOURCES)
+================================================================================
+
+1. GREENHOUSE BOARDS API
+--------------------------------------------------------------------------------
+   Base URL:    https://boards-api.greenhouse.io/v1/boards/{company}
+   Auth:        None
+   Rate Limit:  ~100 req/min (safe estimate)
+   Format:      JSON
+   
+   Endpoints:
+   - GET /jobs                    # List all jobs
+   - GET /jobs?content=true       # Jobs with full descriptions
+   - GET /jobs/{job_id}           # Single job detail
+   - GET /departments             # List departments
+   - GET /offices                 # List offices/locations
+   
+   Example:
+   curl "https://boards-api.greenhouse.io/v1/boards/airbnb/jobs?content=true"
+   
+   Notable Companies: Airbnb, Coinbase, Stripe, Discord, Figma, Notion, 
+                      Pinterest, Robinhood, Shopify, Twitch (~8,000+ total)
+
+
+2. LEVER POSTINGS API
+--------------------------------------------------------------------------------
+   Base URL:    https://api.lever.co/v0/postings/{company}
+   Auth:        None
+   Rate Limit:  ~60 req/min (safe estimate)
+   Format:      JSON
+   
+   Endpoints:
+   - GET /                        # List all jobs
+   - GET /?mode=json&group=team   # Grouped by team
+   - GET /{job_id}                # Single job detail
+   
+   Example:
+   curl "https://api.lever.co/v0/postings/netflix"
+   
+   Notable Companies: Netflix, Atlassian, Cloudflare, Twilio, Databricks, 
+                      Reddit (~5,000+ total)
+
+
+3. ASHBY JOB BOARD API
+--------------------------------------------------------------------------------
+   Base URL:    https://jobs.ashbyhq.com/api/non-user-graphql
+   Auth:        None
+   Rate Limit:  ~60 req/min
+   Format:      GraphQL (JSON)
+   
+   GraphQL Query:
+   curl 'https://jobs.ashbyhq.com/api/non-user-graphql' \
+     -H 'Content-Type: application/json' \
+     -d '{
+       "operationName": "ApiJobBoardWithTeams",
+       "variables": { "organizationHostedJobsPageName": "openai" },
+       "query": "query ApiJobBoardWithTeams($organizationHostedJobsPageName: String!) { 
+         jobBoard: jobBoardWithTeams(organizationHostedJobsPageName: $organizationHostedJobsPageName) { 
+           teams { name jobs { id title locationName employmentType } } 
+         } 
+       }"
+     }'
+   
+   Alternative (some boards):
+   GET https://jobs.ashbyhq.com/{company}/jobs.json
+   
+   Notable Companies: OpenAI, Anthropic, Vercel, Linear, Ramp, Retool (~1,500+ startups)
+
+
+4. WORKABLE PUBLIC API
+--------------------------------------------------------------------------------
+   Base URL:    https://apply.workable.com/api/v3/accounts/{company}/jobs
+   Auth:        None
+   Rate Limit:  ~30 req/min
+   Format:      JSON
+   
+   Endpoints:
+   - GET /jobs                    # List jobs
+   - GET /jobs/{shortcode}        # Job detail
+   
+   Example:
+   curl "https://apply.workable.com/api/v3/accounts/deel/jobs"
+
+
+5. SMARTRECRUITERS PUBLIC API
+--------------------------------------------------------------------------------
+   Base URL:    https://api.smartrecruiters.com/v1/companies/{company}/postings
+   Auth:        None
+   Rate Limit:  ~60 req/min
+   Format:      JSON
+   
+   Endpoints:
+   - GET /postings                       # List jobs
+   - GET /postings?limit=100&offset=0    # With pagination
+   - GET /postings/{posting_id}          # Job detail
+   
+   Example:
+   curl "https://api.smartrecruiters.com/v1/companies/visa/postings"
+
+
+6. RECRUITEE PUBLIC API
+--------------------------------------------------------------------------------
+   Base URL:    https://{company}.recruitee.com/api/offers
+   Auth:        None
+   Rate Limit:  ~30 req/min
+   Format:      JSON
+   
+   Example:
+   curl "https://paradox.recruitee.com/api/offers"
+
+
+7. PERSONIO JOBS API (Popular in Europe)
+--------------------------------------------------------------------------------
+   Base URL:    https://{company}.jobs.personio.com/search.json
+   Auth:        None
+   Format:      JSON
+   
+   Example:
+   curl "https://sennder.jobs.personio.com/search.json"
+
+
+8. BREEZYHR PUBLIC FEED
+--------------------------------------------------------------------------------
+   Base URL:    https://{company}.breezy.hr/json
+   Auth:        None
+   Format:      JSON
+   
+   Example:
+   curl "https://postman.breezy.hr/json"
+
+
+9. JOBVITE PUBLIC FEED
+--------------------------------------------------------------------------------
+   URL Pattern: https://jobs.jobvite.com/{company}/jobs
+   Auth:        None
+   Format:      JSON (append ?format=json)
+   
+   Example:
+   curl "https://jobs.jobvite.com/{company}/jobs?format=json"
+
+
+================================================================================
+TIER 2: JOB BOARDS & AGGREGATORS
+================================================================================
+
+10. REMOTEOK API
+--------------------------------------------------------------------------------
+    Base URL:    https://remoteok.com/api
+    Auth:        None (free tier) / Paid for full access ($299/year)
+    Format:      JSON
+    
+    Example:
+    curl "https://remoteok.com/api"
+
+
+11. ARBEITNOW API (European Tech Jobs)
+--------------------------------------------------------------------------------
+    Base URL:    https://www.arbeitnow.com/api/job-board-api
+    Auth:        None
+    Format:      JSON
+    
+    Example:
+    curl "https://www.arbeitnow.com/api/job-board-api"
+
+
+================================================================================
+TIER 3: REQUIRES FREE API KEY (Instant Signup)
+================================================================================
+
+12. USAJOBS API (US Government)
+--------------------------------------------------------------------------------
+    Base URL:    https://data.usajobs.gov/api/search
+    Auth:        API Key (free, instant signup)
+    Rate Limit:  500 req/day (free tier)
+    Format:      JSON
+    
+    Register:    https://developer.usajobs.gov/APIRequest/Index
+    
+    Example:
+    curl "https://data.usajobs.gov/api/search?Keyword=software%20engineer&ResultsPerPage=100" \
+      -H "Authorization-Key: YOUR_KEY" \
+      -H "User-Agent: your@email.com"
+
+
+13. ADZUNA API (Aggregator)
+--------------------------------------------------------------------------------
+    Base URL:    https://api.adzuna.com/v1/api/jobs/{country}/search/{page}
+    Auth:        API Key (free signup)
+    Free Tier:   250 requests/day
+    Format:      JSON
+    
+    Register:    https://developer.adzuna.com
+
+
+14. THE MUSE API
+--------------------------------------------------------------------------------
+    Base URL:    https://www.themuse.com/api/public/jobs
+    Auth:        API Key (free)
+    Format:      JSON
+    
+    Example:
+    curl "https://www.themuse.com/api/public/jobs?page=1&category=Engineering"
+
+
+================================================================================
+QUICK REFERENCE TABLE
+================================================================================
+
+| API              | Auth      | Est. Jobs  | Best For              |
+|------------------|-----------|------------|-----------------------|
+| Greenhouse       | None      | 200K+      | Tech startups/mid     |
+| Lever            | None      | 150K+      | Tech startups         |
+| Ashby            | None      | 20K+       | AI/ML startups        |
+| Workable         | None      | 50K+       | SMBs globally         |
+| SmartRecruiters  | None      | 100K+      | Enterprise            |
+| Recruitee        | None      | 20K+       | European companies    |
+| BreezyHR         | None      | 30K+       | SMBs                  |
+| Personio         | None      | 20K+       | European companies    |
+| Jobvite          | None      | 40K+       | Mid-market            |
+| RemoteOK         | None      | 5K+        | Remote tech           |
+| Arbeitnow        | None      | 5K+        | European tech         |
+| USAJobs          | Free Key  | 15K+       | Government            |
+| Adzuna           | Free Key  | 1M+        | Aggregated            |
+| The Muse         | Free Key  | 10K+       | Curated tech          |
+
+
+================================================================================
+COMPANY DISCOVERY - FINDING WHO USES WHAT
+================================================================================
+
+To identify which ATS a company uses:
+
+1. Visit the company's careers page
+2. Check the URL pattern:
+   - boards.greenhouse.io/{company} or jobs.greenhouse.io → Greenhouse
+   - jobs.lever.co/{company} → Lever
+   - jobs.ashbyhq.com/{company} → Ashby
+   - apply.workable.com/{company} → Workable
+   - jobs.smartrecruiters.com/{company} → SmartRecruiters
+   - {company}.recruitee.com → Recruitee
+   - {company}.breezy.hr → BreezyHR
+   - {company}.jobs.personio.com → Personio
+
+3. Use browser dev tools to check for API calls
+4. Check page source for ATS-specific scripts/styles
+
+
+================================================================================
+RATE LIMITING BEST PRACTICES
+================================================================================
+
+1. Respect robots.txt crawl-delay directives
+2. Add random delays between requests (1-3 seconds)
+3. Use exponential backoff on 429/503 errors
+4. Rotate user agents
+5. Implement request queuing
+6. Cache responses to avoid redundant calls
+7. Scrape during off-peak hours when possible
+
+
+================================================================================
+LEGAL NOTES
+================================================================================
+
+- All APIs listed are PUBLIC career page APIs intended for job seekers
+- Always check Terms of Service before heavy usage
+- Respect rate limits to avoid IP blocks
+- Attribution may be required for some sources
+- Do not resell data without proper licensing
+- GDPR applies to EU job postings - handle data appropriately
+
+
+================================================================================

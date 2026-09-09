@@ -1,0 +1,408 @@
+================================================================================
+                    JOB SCRAPER PLATFORM — TECH STACK
+                         100% Free Tier Architecture
+================================================================================
+
+Last Updated: 2026-09-09
+
+================================================================================
+ARCHITECTURE OVERVIEW
+================================================================================
+
+┌──────────────┐     ┌──────────────┐     ┌──────────────────────┐
+│   Vercel     │────▶│   Railway    │────▶│    Neon PostgreSQL   │
+│  (Next.js)   │     │  (Fastify)   │     │   (DB + Search)      │
+└──────────────┘     └──────────────┘     └──────────────────────┘
+                            │
+                            ▼
+                     ┌──────────────┐
+                     │   Upstash    │
+                     │   (Redis)    │
+                     └──────────────┘
+
+┌──────────────────────────────────────────────────────────────────┐
+│                    GitHub Actions (Cron)                         │
+│         Runs scrapers every 6 hours → Fetches jobs → DB         │
+└──────────────────────────────────────────────────────────────────┘
+
+
+================================================================================
+LANGUAGE & FRAMEWORK DECISIONS
+================================================================================
+
+Language:           TypeScript (Full Stack)
+                    - Type safety across frontend and backend
+                    - Shared interfaces between apps
+                    - Excellent tooling and ecosystem
+
+Frontend:           Next.js 14+ (App Router)
+                    - Server-side rendering for SEO
+                    - React Server Components
+                    - Deployed on Vercel (free)
+
+Backend:            Fastify
+                    - Fastest Node.js framework
+                    - Built-in validation with Zod
+                    - Deployed on Railway (free)
+
+ORM:                Prisma
+                    - Type-safe database access
+                    - Auto-generated migrations
+                    - Excellent developer experience
+
+
+================================================================================
+FREE TIER SERVICES
+================================================================================
+
+--------------------------------------------------------------------------------
+DATABASE: Neon PostgreSQL
+--------------------------------------------------------------------------------
+URL:            https://neon.tech
+Free Tier:      0.5 GB storage, 190 compute hours/month
+Features:       - Serverless PostgreSQL
+                - Branching for dev/staging
+                - No pause on inactivity
+                - Connection pooling built-in
+Capacity:       ~200,000 jobs
+
+Why Chosen:     Best free PostgreSQL, serverless, always-on
+
+
+--------------------------------------------------------------------------------
+SEARCH: PostgreSQL Full-Text Search (Built-in)
+--------------------------------------------------------------------------------
+Cost:           $0 (included with Neon)
+Features:       - Full-text search with ranking
+                - Trigram similarity for fuzzy matching
+                - GIN indexes for performance
+                - JSONB for faceted filtering
+
+Example Setup:
+    -- Create search index
+    CREATE INDEX jobs_search_idx ON jobs 
+    USING GIN (to_tsvector('english', title || ' ' || description));
+
+    -- Search query
+    SELECT * FROM jobs 
+    WHERE to_tsvector('english', title || ' ' || description) 
+          @@ plainto_tsquery('english', 'react developer')
+    ORDER BY ts_rank(...) DESC;
+
+Why Chosen:     Free, good enough for 500K+ jobs, no extra service
+
+
+--------------------------------------------------------------------------------
+CACHE & QUEUE: Upstash Redis
+--------------------------------------------------------------------------------
+URL:            https://upstash.com
+Free Tier:      10,000 commands/day, 256 MB storage
+Features:       - Serverless Redis
+                - REST API (works in edge/serverless)
+                - BullMQ compatible
+                - Global replication available
+
+Use Cases:      - API response caching
+                - Rate limiting
+                - Job queue (BullMQ)
+                - Session storage
+
+Why Chosen:     Only free serverless Redis, works with BullMQ
+
+
+--------------------------------------------------------------------------------
+OBJECT STORAGE: Cloudflare R2
+--------------------------------------------------------------------------------
+URL:            https://developers.cloudflare.com/r2
+Free Tier:      10 GB storage, 10M Class A ops, 10M Class B ops/month
+Features:       - S3-compatible API
+                - No egress fees (huge advantage)
+                - Global CDN included
+
+Use Cases:      - Raw scraped HTML/JSON backup
+                - Company logos
+                - Export files
+
+Why Chosen:     Most generous free tier, no egress costs
+
+
+--------------------------------------------------------------------------------
+FRONTEND HOSTING: Vercel
+--------------------------------------------------------------------------------
+URL:            https://vercel.com
+Free Tier:      100 GB bandwidth, unlimited deployments
+Features:       - Built for Next.js
+                - Automatic HTTPS
+                - Preview deployments for PRs
+                - Edge functions
+                - Analytics (limited free)
+
+Why Chosen:     Best DX for Next.js, generous free tier
+
+
+--------------------------------------------------------------------------------
+BACKEND HOSTING: Railway
+--------------------------------------------------------------------------------
+URL:            https://railway.app
+Free Tier:      $5 credit/month (~500 hours)
+Features:       - No sleep on inactivity
+                - Easy PostgreSQL/Redis add-ons
+                - GitHub integration
+                - Automatic deployments
+
+Why Chosen:     No cold starts, always running, easy setup
+
+
+--------------------------------------------------------------------------------
+CRON/SCHEDULER: GitHub Actions
+--------------------------------------------------------------------------------
+URL:            https://github.com/features/actions
+Free Tier:      2,000 minutes/month (public repos unlimited)
+Features:       - Cron syntax scheduling
+                - Access to secrets
+                - Can run any script
+                - Matrix builds for parallel scraping
+
+Use Cases:      - Scheduled scraper runs (every 6 hours)
+                - Database maintenance jobs
+                - Sitemap generation
+
+Example Workflow:
+    name: Scrape Jobs
+    on:
+      schedule:
+        - cron: '0 */6 * * *'  # Every 6 hours
+    jobs:
+      scrape:
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/checkout@v4
+          - run: npm ci
+          - run: npm run scrape
+            env:
+              DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+Why Chosen:     2000 min/month is plenty, integrated with repo
+
+
+--------------------------------------------------------------------------------
+LOGGING: Better Stack (Logtail)
+--------------------------------------------------------------------------------
+URL:            https://betterstack.com
+Free Tier:      1 GB logs/month, 3 days retention
+Features:       - Structured JSON logs
+                - Search and filtering
+                - Alerts
+                - Live tail
+
+Why Chosen:     Best free logging service
+
+
+--------------------------------------------------------------------------------
+ERROR TRACKING: Sentry
+--------------------------------------------------------------------------------
+URL:            https://sentry.io
+Free Tier:      5,000 errors/month
+Features:       - Stack traces with source maps
+                - Release tracking
+                - Performance monitoring
+                - Slack/email alerts
+
+Why Chosen:     Industry standard, generous free tier
+
+
+--------------------------------------------------------------------------------
+UPTIME MONITORING: Better Uptime
+--------------------------------------------------------------------------------
+URL:            https://betteruptime.com
+Free Tier:      10 monitors, 3-minute checks
+Features:       - HTTP/HTTPS monitoring
+                - Status page
+                - Slack/email alerts
+                - Incident management
+
+Why Chosen:     Clean UI, good free tier
+
+
+================================================================================
+TECH STACK SUMMARY
+================================================================================
+
+┌─────────────────────────────────────────────────────────────────┐
+│                      PRESENTATION LAYER                         │
+├─────────────────────────────────────────────────────────────────┤
+│  Next.js 14         - React framework with SSR/SSG             │
+│  Tailwind CSS       - Utility-first CSS                         │
+│  shadcn/ui          - Accessible component library              │
+│  TanStack Query     - Server state management                   │
+│  Zustand            - Client state (if needed)                  │
+│  React Hook Form    - Form handling                             │
+│  Zod                - Schema validation                         │
+│                                                                 │
+│  Hosting: Vercel (free)                                         │
+└─────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────┐
+│                        API LAYER                                │
+├─────────────────────────────────────────────────────────────────┤
+│  Fastify            - Fast Node.js framework                    │
+│  Zod                - Request/response validation               │
+│  Prisma             - Type-safe ORM                             │
+│  Pino               - Structured logging                        │
+│  BullMQ             - Job queue (Redis-backed)                  │
+│                                                                 │
+│  Hosting: Railway (free)                                        │
+└─────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────┐
+│                        DATA LAYER                               │
+├─────────────────────────────────────────────────────────────────┤
+│  Neon PostgreSQL    - Primary database + full-text search      │
+│  Upstash Redis      - Cache + job queue                         │
+│  Cloudflare R2      - Object storage                            │
+└─────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────┐
+│                     PROCESSING LAYER                            │
+├─────────────────────────────────────────────────────────────────┤
+│  GitHub Actions     - Scheduled scraper execution               │
+│  BullMQ             - Job queue management                      │
+│  Node.js fetch      - API calls to job boards                   │
+└─────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────┐
+│                    OBSERVABILITY                                │
+├─────────────────────────────────────────────────────────────────┤
+│  Better Stack       - Centralized logging                       │
+│  Sentry             - Error tracking                            │
+│  Better Uptime      - Health monitoring                         │
+└─────────────────────────────────────────────────────────────────┘
+
+
+================================================================================
+FREE TIER CAPACITY SUMMARY
+================================================================================
+
+| Resource           | Free Limit              | Capacity              |
+|--------------------|-------------------------|-----------------------|
+| Neon PostgreSQL    | 0.5 GB storage          | ~200,000 jobs         |
+| Upstash Redis      | 10K commands/day        | ~1,000 searches/day   |
+| Cloudflare R2      | 10 GB storage           | Months of raw data    |
+| Vercel             | 100 GB bandwidth        | ~50,000 users/month   |
+| Railway            | $5 credit/month         | API running 24/7      |
+| GitHub Actions     | 2,000 minutes/month     | Scrape every 6 hours  |
+| Better Stack       | 1 GB logs/month         | Standard logging      |
+| Sentry             | 5,000 errors/month      | Plenty for MVP        |
+
+TOTAL MONTHLY COST: $0
+
+
+================================================================================
+PROJECT STRUCTURE
+================================================================================
+
+job-scraper/
+├── apps/
+│   ├── web/                    # Next.js frontend (→ Vercel)
+│   │   ├── app/                # App router pages
+│   │   ├── components/         # React components  
+│   │   ├── lib/                # Utilities
+│   │   └── package.json
+│   │
+│   └── api/                    # Fastify API (→ Railway)
+│       ├── src/
+│       │   ├── routes/         # API endpoints
+│       │   ├── services/       # Business logic
+│       │   ├── scrapers/       # Source adapters
+│       │   └── index.ts        # Entry point
+│       └── package.json
+│
+├── packages/
+│   ├── db/                     # Prisma schema (→ Neon)
+│   │   ├── prisma/
+│   │   │   ├── schema.prisma
+│   │   │   └── migrations/
+│   │   └── package.json
+│   │
+│   └── shared/                 # Shared types & utilities
+│       ├── src/
+│       │   ├── types/          # TypeScript interfaces
+│       │   └── constants/      # Shared constants
+│       └── package.json
+│
+├── .github/
+│   └── workflows/
+│       └── scrape.yml          # Scheduled scraper job
+│
+├── docs/
+│   ├── public-job-apis.txt     # API reference
+│   └── tech-stack.txt          # This file
+│
+├── docker-compose.yml          # Local development
+├── turbo.json                  # Monorepo config
+├── package.json                # Root package
+└── README.md
+
+
+================================================================================
+LOCAL DEVELOPMENT
+================================================================================
+
+Docker Compose provides local PostgreSQL and Redis:
+
+    docker-compose up -d        # Start services
+    npm run dev                 # Start all apps
+
+Services:
+    - PostgreSQL: localhost:5432
+    - Redis: localhost:6379
+    - Web: localhost:3000
+    - API: localhost:3001
+
+
+================================================================================
+DEPLOYMENT WORKFLOW
+================================================================================
+
+1. Push to main branch
+2. GitHub Actions runs tests
+3. Vercel auto-deploys frontend
+4. Railway auto-deploys API
+5. Prisma migrations run automatically
+
+
+================================================================================
+SCALING PATH (When You Outgrow Free Tiers)
+================================================================================
+
+| Component      | Free Tier          | Paid Upgrade Path              |
+|----------------|--------------------|---------------------------------|
+| Database       | Neon (0.5GB)       | Neon Pro ($19/mo) or Supabase  |
+| Search         | PostgreSQL FTS     | Meilisearch Cloud or Typesense |
+| Cache          | Upstash (10K/day)  | Upstash Pro or Redis Cloud     |
+| API Hosting    | Railway ($5)       | Railway Pro or Fly.io          |
+| Frontend       | Vercel (100GB)     | Vercel Pro ($20/mo)            |
+
+Estimated cost at 100K users: $50-100/month
+
+
+================================================================================
+QUICK REFERENCE
+================================================================================
+
+| Need              | Free Solution              | URL                        |
+|-------------------|----------------------------|----------------------------|
+| Database          | Neon PostgreSQL            | neon.tech                  |
+| Search            | PostgreSQL FTS             | (built-in)                 |
+| Cache             | Upstash Redis              | upstash.com                |
+| Queue             | BullMQ + Upstash           | docs.bullmq.io             |
+| File Storage      | Cloudflare R2              | cloudflare.com/r2          |
+| Frontend Hosting  | Vercel                     | vercel.com                 |
+| API Hosting       | Railway                    | railway.app                |
+| Cron Jobs         | GitHub Actions             | github.com/features/actions|
+| Logs              | Better Stack               | betterstack.com            |
+| Errors            | Sentry                     | sentry.io                  |
+| Uptime            | Better Uptime              | betteruptime.com           |
+
+
+================================================================================
