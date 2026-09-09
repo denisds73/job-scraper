@@ -2,7 +2,7 @@
  * Database Seed Script
  * =============================================================================
  * Populates the database with realistic sample data for development.
- * Uses real company names and realistic job postings.
+ * Updated for India-focused job platform with Indian companies and INR salaries.
  * 
  * Usage: npx prisma db seed
  */
@@ -20,117 +20,118 @@ import {
 const prisma = new PrismaClient();
 
 // =============================================================================
-// SEED DATA
+// SEED DATA - INDIAN COMPANIES
 // =============================================================================
 
 const companies: Prisma.CompanyCreateInput[] = [
   {
-    name: 'Stripe',
-    slug: 'stripe',
-    logo: 'https://logo.clearbit.com/stripe.com',
-    description: 'Financial infrastructure for the internet. Millions of companies use Stripe to accept payments, send payouts, and manage their businesses online.',
-    website: 'https://stripe.com',
-    careerPageUrl: 'https://stripe.com/jobs',
+    name: 'Razorpay',
+    slug: 'razorpay',
+    logo: 'https://logo.clearbit.com/razorpay.com',
+    description: 'Razorpay is India\'s leading full-stack financial solutions company, helping businesses accept, process and disburse payments.',
+    website: 'https://razorpay.com',
+    careerPageUrl: 'https://razorpay.com/jobs',
     industry: 'Financial Technology',
     size: 'SIZE_1001_5000',
-    foundedYear: 2010,
-    headquarters: 'San Francisco, CA',
+    foundedYear: 2014,
+    headquarters: 'Bangalore, India',
     atsType: 'GREENHOUSE',
   },
   {
-    name: 'Figma',
-    slug: 'figma',
-    logo: 'https://logo.clearbit.com/figma.com',
-    description: 'Figma is a collaborative interface design tool that helps teams create, test, and ship better designs from start to finish.',
-    website: 'https://figma.com',
-    careerPageUrl: 'https://www.figma.com/careers',
-    industry: 'Design Software',
-    size: 'SIZE_501_1000',
-    foundedYear: 2012,
-    headquarters: 'San Francisco, CA',
-    atsType: 'GREENHOUSE',
-  },
-  {
-    name: 'Vercel',
-    slug: 'vercel',
-    logo: 'https://logo.clearbit.com/vercel.com',
-    description: 'Vercel is the platform for frontend developers, providing the speed and reliability innovators need to create at the moment of inspiration.',
-    website: 'https://vercel.com',
-    careerPageUrl: 'https://vercel.com/careers',
-    industry: 'Developer Tools',
-    size: 'SIZE_201_500',
-    foundedYear: 2015,
-    headquarters: 'San Francisco, CA',
+    name: 'Swiggy',
+    slug: 'swiggy',
+    logo: 'https://logo.clearbit.com/swiggy.com',
+    description: 'Swiggy is India\'s largest and most valuable online food ordering and delivery platform.',
+    website: 'https://swiggy.com',
+    careerPageUrl: 'https://careers.swiggy.com',
+    industry: 'Food Technology',
+    size: 'SIZE_5000_PLUS',
+    foundedYear: 2014,
+    headquarters: 'Bangalore, India',
     atsType: 'LEVER',
   },
   {
-    name: 'Linear',
-    slug: 'linear',
-    logo: 'https://logo.clearbit.com/linear.app',
-    description: 'Linear is the issue tracking tool that streamlines software projects, sprints, tasks, and bug tracking.',
-    website: 'https://linear.app',
-    careerPageUrl: 'https://linear.app/careers',
-    industry: 'Developer Tools',
-    size: 'SIZE_51_200',
-    foundedYear: 2019,
-    headquarters: 'San Francisco, CA',
-    atsType: 'ASHBY',
-  },
-  {
-    name: 'Notion',
-    slug: 'notion',
-    logo: 'https://logo.clearbit.com/notion.so',
-    description: 'Notion is the all-in-one workspace for notes, docs, wikis, projects, and collaboration.',
-    website: 'https://notion.so',
-    careerPageUrl: 'https://notion.so/careers',
-    industry: 'Productivity Software',
+    name: 'CRED',
+    slug: 'cred',
+    logo: 'https://logo.clearbit.com/cred.club',
+    description: 'CRED is a members-only credit card bill payment platform that rewards its users for timely payments.',
+    website: 'https://cred.club',
+    careerPageUrl: 'https://careers.cred.club',
+    industry: 'Financial Technology',
     size: 'SIZE_501_1000',
-    foundedYear: 2013,
-    headquarters: 'San Francisco, CA',
-    atsType: 'GREENHOUSE',
-  },
-  {
-    name: 'Supabase',
-    slug: 'supabase',
-    logo: 'https://logo.clearbit.com/supabase.com',
-    description: 'Supabase is an open source Firebase alternative. Start your project with a Postgres database, Authentication, instant APIs, and realtime subscriptions.',
-    website: 'https://supabase.com',
-    careerPageUrl: 'https://supabase.com/careers',
-    industry: 'Developer Tools',
-    size: 'SIZE_51_200',
-    foundedYear: 2020,
-    headquarters: 'Singapore',
+    foundedYear: 2018,
+    headquarters: 'Bangalore, India',
     atsType: 'ASHBY',
   },
   {
-    name: 'Shopify',
-    slug: 'shopify',
-    logo: 'https://logo.clearbit.com/shopify.com',
-    description: 'Shopify is a complete commerce platform that lets you start, grow, and manage a business.',
-    website: 'https://shopify.com',
-    careerPageUrl: 'https://www.shopify.com/careers',
+    name: 'Flipkart',
+    slug: 'flipkart',
+    logo: 'https://logo.clearbit.com/flipkart.com',
+    description: 'Flipkart is India\'s leading e-commerce marketplace with over 450 million registered users.',
+    website: 'https://flipkart.com',
+    careerPageUrl: 'https://www.flipkartcareers.com',
     industry: 'E-Commerce',
     size: 'SIZE_5000_PLUS',
-    foundedYear: 2006,
-    headquarters: 'Ottawa, Canada',
+    foundedYear: 2007,
+    headquarters: 'Bangalore, India',
     atsType: 'GREENHOUSE',
   },
   {
-    name: 'Datadog',
-    slug: 'datadog',
-    logo: 'https://logo.clearbit.com/datadoghq.com',
-    description: 'Datadog is the monitoring and security platform for cloud applications.',
-    website: 'https://datadoghq.com',
-    careerPageUrl: 'https://www.datadoghq.com/careers',
-    industry: 'Cloud Infrastructure',
+    name: 'Groww',
+    slug: 'groww',
+    logo: 'https://logo.clearbit.com/groww.in',
+    description: 'Groww is a leading investment platform that enables users to invest in stocks, mutual funds, and more.',
+    website: 'https://groww.in',
+    careerPageUrl: 'https://groww.in/careers',
+    industry: 'Financial Technology',
     size: 'SIZE_1001_5000',
-    foundedYear: 2010,
-    headquarters: 'New York, NY',
+    foundedYear: 2016,
+    headquarters: 'Bangalore, India',
+    atsType: 'ASHBY',
+  },
+  {
+    name: 'Zomato',
+    slug: 'zomato',
+    logo: 'https://logo.clearbit.com/zomato.com',
+    description: 'Zomato is a technology platform that connects customers, restaurant partners and delivery partners.',
+    website: 'https://zomato.com',
+    careerPageUrl: 'https://www.zomato.com/careers',
+    industry: 'Food Technology',
+    size: 'SIZE_5000_PLUS',
+    foundedYear: 2008,
+    headquarters: 'Gurugram, India',
+    atsType: 'LEVER',
+  },
+  {
+    name: 'PhonePe',
+    slug: 'phonepe',
+    logo: 'https://logo.clearbit.com/phonepe.com',
+    description: 'PhonePe is India\'s leading digital payments platform with over 400 million registered users.',
+    website: 'https://phonepe.com',
+    careerPageUrl: 'https://www.phonepe.com/careers',
+    industry: 'Financial Technology',
+    size: 'SIZE_5000_PLUS',
+    foundedYear: 2015,
+    headquarters: 'Bangalore, India',
     atsType: 'GREENHOUSE',
+  },
+  {
+    name: 'Meesho',
+    slug: 'meesho',
+    logo: 'https://logo.clearbit.com/meesho.com',
+    description: 'Meesho is India\'s fastest growing e-commerce platform, enabling small businesses to start with zero investment.',
+    website: 'https://meesho.com',
+    careerPageUrl: 'https://careers.meesho.com',
+    industry: 'E-Commerce',
+    size: 'SIZE_1001_5000',
+    foundedYear: 2015,
+    headquarters: 'Bangalore, India',
+    atsType: 'LEVER',
   },
 ];
 
-// Job templates with realistic data
+// Job templates with realistic Indian salaries (in INR)
+// Salaries are annual in absolute values: 30L = 3000000
 const jobTemplates = [
   // Engineering roles
   {
@@ -139,8 +140,8 @@ const jobTemplates = [
     employmentType: 'FULL_TIME',
     experienceLevel: 'SENIOR',
     skills: ['TypeScript', 'React', 'Node.js', 'PostgreSQL', 'AWS'],
-    salaryMin: 180000,
-    salaryMax: 250000,
+    salaryMin: 3000000,  // 30 LPA
+    salaryMax: 5000000,  // 50 LPA
   },
   {
     title: 'Staff Engineer, Platform',
@@ -148,8 +149,8 @@ const jobTemplates = [
     employmentType: 'FULL_TIME',
     experienceLevel: 'STAFF',
     skills: ['Go', 'Kubernetes', 'Terraform', 'AWS', 'System Design'],
-    salaryMin: 250000,
-    salaryMax: 350000,
+    salaryMin: 5000000,  // 50 LPA
+    salaryMax: 8000000,  // 80 LPA
   },
   {
     title: 'Frontend Engineer',
@@ -157,202 +158,146 @@ const jobTemplates = [
     employmentType: 'FULL_TIME',
     experienceLevel: 'MID',
     skills: ['React', 'TypeScript', 'CSS', 'Next.js', 'GraphQL'],
-    salaryMin: 140000,
-    salaryMax: 190000,
+    salaryMin: 1500000,  // 15 LPA
+    salaryMax: 2500000,  // 25 LPA
   },
   {
     title: 'Backend Engineer',
     department: 'Engineering',
     employmentType: 'FULL_TIME',
     experienceLevel: 'MID',
-    skills: ['Python', 'Django', 'PostgreSQL', 'Redis', 'Docker'],
-    salaryMin: 150000,
-    salaryMax: 200000,
-  },
-  {
-    title: 'Full Stack Engineer',
-    department: 'Engineering',
-    employmentType: 'FULL_TIME',
-    experienceLevel: 'MID',
-    skills: ['TypeScript', 'React', 'Node.js', 'MongoDB', 'GraphQL'],
-    salaryMin: 145000,
-    salaryMax: 195000,
+    skills: ['Java', 'Spring Boot', 'MySQL', 'Redis', 'Kafka'],
+    salaryMin: 1800000,  // 18 LPA
+    salaryMax: 3000000,  // 30 LPA
   },
   {
     title: 'DevOps Engineer',
     department: 'Infrastructure',
     employmentType: 'FULL_TIME',
     experienceLevel: 'SENIOR',
-    skills: ['Kubernetes', 'Terraform', 'AWS', 'CI/CD', 'Python'],
-    salaryMin: 170000,
-    salaryMax: 230000,
+    skills: ['Kubernetes', 'Docker', 'Terraform', 'AWS', 'CI/CD'],
+    salaryMin: 2500000,  // 25 LPA
+    salaryMax: 4000000,  // 40 LPA
+  },
+  {
+    title: 'Data Engineer',
+    department: 'Data',
+    employmentType: 'FULL_TIME',
+    experienceLevel: 'MID',
+    skills: ['Python', 'Spark', 'Airflow', 'SQL', 'AWS'],
+    salaryMin: 2000000,  // 20 LPA
+    salaryMax: 3500000,  // 35 LPA
   },
   {
     title: 'Machine Learning Engineer',
-    department: 'Engineering',
+    department: 'AI/ML',
     employmentType: 'FULL_TIME',
     experienceLevel: 'SENIOR',
-    skills: ['Python', 'PyTorch', 'TensorFlow', 'MLOps', 'SQL'],
-    salaryMin: 200000,
-    salaryMax: 280000,
+    skills: ['Python', 'PyTorch', 'TensorFlow', 'MLOps', 'NLP'],
+    salaryMin: 3500000,  // 35 LPA
+    salaryMax: 6000000,  // 60 LPA
   },
   {
-    title: 'Engineering Manager',
+    title: 'Mobile Engineer (Android)',
     department: 'Engineering',
     employmentType: 'FULL_TIME',
-    experienceLevel: 'SENIOR',
-    skills: ['Leadership', 'Agile', 'Technical Strategy', 'Hiring'],
-    salaryMin: 220000,
-    salaryMax: 300000,
+    experienceLevel: 'MID',
+    skills: ['Kotlin', 'Android', 'Jetpack Compose', 'MVVM', 'REST APIs'],
+    salaryMin: 1500000,  // 15 LPA
+    salaryMax: 2800000,  // 28 LPA
   },
   {
-    title: 'Software Engineer, New Grad',
+    title: 'Mobile Engineer (iOS)',
     department: 'Engineering',
     employmentType: 'FULL_TIME',
-    experienceLevel: 'ENTRY',
-    skills: ['JavaScript', 'Python', 'Data Structures', 'Algorithms'],
-    salaryMin: 120000,
-    salaryMax: 160000,
+    experienceLevel: 'MID',
+    skills: ['Swift', 'iOS', 'SwiftUI', 'Core Data', 'REST APIs'],
+    salaryMin: 1500000,  // 15 LPA
+    salaryMax: 2800000,  // 28 LPA
   },
   {
-    title: 'Software Engineering Intern',
+    title: 'SDE Intern',
     department: 'Engineering',
     employmentType: 'INTERNSHIP',
     experienceLevel: 'ENTRY',
-    skills: ['JavaScript', 'Python', 'Git', 'Problem Solving'],
-    salaryMin: 8000,
-    salaryMax: 12000,
+    skills: ['Python', 'JavaScript', 'Data Structures', 'Algorithms'],
+    salaryMin: 500000,   // 5 LPA (annualized)
+    salaryMax: 1000000,  // 10 LPA (annualized)
   },
   // Product & Design
   {
     title: 'Product Manager',
     department: 'Product',
     employmentType: 'FULL_TIME',
-    experienceLevel: 'MID',
-    skills: ['Product Strategy', 'Analytics', 'SQL', 'User Research'],
-    salaryMin: 150000,
-    salaryMax: 210000,
+    experienceLevel: 'SENIOR',
+    skills: ['Product Strategy', 'Data Analysis', 'Agile', 'User Research', 'SQL'],
+    salaryMin: 3000000,  // 30 LPA
+    salaryMax: 5000000,  // 50 LPA
   },
   {
     title: 'Senior Product Designer',
     department: 'Design',
     employmentType: 'FULL_TIME',
     experienceLevel: 'SENIOR',
-    skills: ['Figma', 'User Research', 'Prototyping', 'Design Systems'],
-    salaryMin: 160000,
-    salaryMax: 220000,
-  },
-  {
-    title: 'UX Researcher',
-    department: 'Design',
-    employmentType: 'FULL_TIME',
-    experienceLevel: 'MID',
-    skills: ['User Research', 'Usability Testing', 'Data Analysis', 'Survey Design'],
-    salaryMin: 130000,
-    salaryMax: 175000,
-  },
-  // Data
-  {
-    title: 'Data Engineer',
-    department: 'Data',
-    employmentType: 'FULL_TIME',
-    experienceLevel: 'MID',
-    skills: ['Python', 'SQL', 'Spark', 'Airflow', 'dbt'],
-    salaryMin: 160000,
-    salaryMax: 220000,
-  },
-  {
-    title: 'Data Scientist',
-    department: 'Data',
-    employmentType: 'FULL_TIME',
-    experienceLevel: 'SENIOR',
-    skills: ['Python', 'SQL', 'Statistics', 'Machine Learning', 'A/B Testing'],
-    salaryMin: 180000,
-    salaryMax: 250000,
+    skills: ['Figma', 'User Research', 'Design Systems', 'Prototyping', 'UI/UX'],
+    salaryMin: 2500000,  // 25 LPA
+    salaryMax: 4000000,  // 40 LPA
   },
 ];
 
+// Indian cities for job locations
 const locations = [
-  { location: 'San Francisco, CA', locationType: 'HYBRID', isRemote: false },
-  { location: 'New York, NY', locationType: 'HYBRID', isRemote: false },
-  { location: 'Remote (US)', locationType: 'REMOTE', isRemote: true },
-  { location: 'Remote (Worldwide)', locationType: 'REMOTE', isRemote: true },
-  { location: 'Seattle, WA', locationType: 'HYBRID', isRemote: false },
-  { location: 'Austin, TX', locationType: 'ONSITE', isRemote: false },
-  { location: 'London, UK', locationType: 'HYBRID', isRemote: false },
-  { location: 'Remote (EU)', locationType: 'REMOTE', isRemote: true },
+  'Bangalore, India',
+  'Hyderabad, India',
+  'Pune, India',
+  'Chennai, India',
+  'Mumbai, India',
+  'Delhi-NCR, India',
+  'Gurugram, India',
+  'Noida, India',
+  'Remote (India)',
 ];
 
-const descriptions = {
-  engineering: `## About the Role
+// Location types distribution
+const locationTypes: LocationType[] = [
+  'REMOTE',
+  'HYBRID',
+  'HYBRID',
+  'ONSITE',
+  'HYBRID',
+  'REMOTE',
+];
 
-We're looking for a talented engineer to join our team and help build the future of our platform. You'll work on challenging problems, collaborate with a world-class team, and have a direct impact on millions of users.
+// Description templates
+const descriptionTemplates = [
+  `We are looking for a talented {title} to join our {department} team. You will work on challenging problems at scale and help build products used by millions of users across India.
 
-## What You'll Do
+**What you'll do:**
+- Design and implement scalable, reliable systems
+- Collaborate with cross-functional teams including Product and Design
+- Mentor junior engineers and contribute to technical decisions
+- Write clean, maintainable, and well-tested code
 
-- Design, build, and maintain scalable systems that power our core product
-- Collaborate with product managers, designers, and other engineers to deliver impactful features
-- Mentor junior engineers and contribute to our engineering culture
-- Participate in code reviews and help maintain high code quality standards
-- Contribute to architectural decisions and technical strategy
+**What we're looking for:**
+- {experience} years of experience in software development
+- Strong problem-solving skills and attention to detail
+- Excellent communication and collaboration abilities
+- Passion for building great products`,
 
-## What We're Looking For
+  `Join our {department} team as a {title} and be part of building India's next-generation technology platform. We're looking for someone who is passionate about technology and excited to work on problems that impact millions of users.
 
-- Strong programming skills and computer science fundamentals
-- Experience building and operating production systems
-- Excellent problem-solving and communication skills
-- A track record of shipping high-quality software
-- Passion for building great products
+**Responsibilities:**
+- Build and maintain high-quality software solutions
+- Participate in code reviews and technical discussions
+- Work closely with stakeholders to understand requirements
+- Contribute to improving our engineering practices
 
-## Benefits
-
-- Competitive salary and equity
-- Comprehensive health, dental, and vision insurance
-- Flexible PTO and work arrangements
-- Learning and development budget
-- Home office setup allowance
-- Regular team offsites and events`,
-
-  product: `## About the Role
-
-We're seeking a Product Manager to help define and execute our product strategy. You'll work closely with engineering, design, and business teams to build products that delight our customers.
-
-## What You'll Do
-
-- Define product vision and strategy for your area
-- Gather and analyze customer feedback and market research
-- Work with engineering and design to deliver great products
-- Define and track key metrics for product success
-- Communicate product updates to stakeholders
-
-## What We're Looking For
-
-- Experience in product management at a technology company
-- Strong analytical and problem-solving skills
-- Excellent written and verbal communication
-- Ability to work cross-functionally
-- Technical background preferred`,
-
-  design: `## About the Role
-
-We're looking for a designer to help create beautiful, intuitive experiences for our users. You'll work on end-to-end design challenges, from research to final implementation.
-
-## What You'll Do
-
-- Lead design projects from concept to launch
-- Conduct user research and usability testing
-- Create wireframes, prototypes, and high-fidelity designs
-- Collaborate with engineers to ensure design quality
-- Contribute to and maintain our design system
-
-## What We're Looking For
-
-- Portfolio demonstrating strong design skills
-- Experience with modern design tools (Figma, etc.)
-- Understanding of interaction design and usability principles
-- Ability to take feedback and iterate quickly
-- Strong communication skills`,
-};
+**Requirements:**
+- {experience}+ years of relevant experience
+- Strong fundamentals in computer science
+- Experience with modern development practices
+- Ability to work in a fast-paced startup environment`,
+];
 
 // =============================================================================
 // SEED FUNCTIONS
@@ -362,159 +307,108 @@ function generateExternalId(): string {
   return `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
 }
 
-function randomItem<T>(array: T[]): T {
+function randomElement<T>(array: T[]): T {
   return array[Math.floor(Math.random() * array.length)];
 }
 
-function randomDaysAgo(maxDays: number): Date {
-  const daysAgo = Math.floor(Math.random() * maxDays);
-  const date = new Date();
-  date.setDate(date.getDate() - daysAgo);
-  return date;
+function generateDescription(template: typeof jobTemplates[0]): string {
+  const descTemplate = randomElement(descriptionTemplates);
+  const experience = template.experienceLevel === 'ENTRY' ? '0-1' :
+                    template.experienceLevel === 'MID' ? '2-4' :
+                    template.experienceLevel === 'SENIOR' ? '5-8' : '8+';
+  
+  return descTemplate
+    .replace('{title}', template.title)
+    .replace('{department}', template.department)
+    .replace('{experience}', experience);
 }
 
-function getDescription(department: string): string {
-  if (department === 'Product') return descriptions.product;
-  if (department === 'Design') return descriptions.design;
-  return descriptions.engineering;
-}
+async function main() {
+  console.log('🌱 Starting seed...\n');
 
-async function seedCompanies(): Promise<Map<string, string>> {
-  console.log('Seeding companies...');
-  const companyIds = new Map<string, string>();
+  // Clear existing data
+  console.log('Clearing existing data...');
+  await prisma.job.deleteMany();
+  await prisma.scrape.deleteMany();
+  await prisma.company.deleteMany();
+
+  // Create companies
+  console.log('\nCreating companies...');
+  const createdCompanies: { id: string; name: string; slug: string; atsType: JobSource }[] = [];
 
   for (const company of companies) {
-    const created = await prisma.company.upsert({
-      where: { slug: company.slug },
-      update: {},
-      create: company,
+    const created = await prisma.company.create({
+      data: company,
     });
-    companyIds.set(company.slug, created.id);
+    createdCompanies.push({
+      id: created.id,
+      name: created.name,
+      slug: created.slug,
+      atsType: created.atsType,
+    });
     console.log(`  ✓ ${company.name}`);
   }
 
-  return companyIds;
-}
+  // Create jobs for each company
+  console.log('\nCreating jobs...');
+  let totalJobs = 0;
 
-async function seedJobs(companyIds: Map<string, string>): Promise<void> {
-  console.log('Seeding jobs...');
-  let jobCount = 0;
+  for (const company of createdCompanies) {
+    // Each company gets 3-6 random jobs
+    const jobCount = Math.floor(Math.random() * 4) + 3;
+    const selectedTemplates = [...jobTemplates]
+      .sort(() => Math.random() - 0.5)
+      .slice(0, jobCount);
 
-  for (const [slug, companyId] of companyIds) {
-    // Each company gets 3-8 random jobs
-    const numJobs = 3 + Math.floor(Math.random() * 6);
-
-    for (let i = 0; i < numJobs; i++) {
-      const template = randomItem(jobTemplates);
-      const loc = randomItem(locations);
-
-      const job: Prisma.JobCreateInput = {
-        externalId: generateExternalId(),
-        source: randomItem([JobSource.GREENHOUSE, JobSource.LEVER, JobSource.ASHBY]),
-        title: template.title,
-        description: getDescription(template.department),
-        requirements: [
-          `${template.skills[0]} experience required`,
-          'Strong problem-solving skills',
-          'Excellent communication skills',
-          'Ability to work in a fast-paced environment',
-        ],
-        location: loc.location,
-        isRemote: loc.isRemote,
-        locationType: loc.locationType as LocationType,
-        employmentType: template.employmentType as EmploymentType,
-        experienceLevel: template.experienceLevel as ExperienceLevel,
-        department: template.department,
-        salaryMin: template.salaryMin,
-        salaryMax: template.salaryMax,
-        salaryCurrency: 'USD',
-        salaryPeriod: template.employmentType === 'FULL_TIME' ? SalaryPeriod.YEARLY : 
-                      template.employmentType === 'INTERNSHIP' ? SalaryPeriod.MONTHLY : SalaryPeriod.YEARLY,
-        skills: template.skills,
-        postedAt: randomDaysAgo(30),
-        sourceUrl: `https://example.com/jobs/${slug}/${generateExternalId()}`,
-        company: { connect: { id: companyId } },
-      };
-
-      await prisma.job.create({ data: job });
-      jobCount++;
+    for (const template of selectedTemplates) {
+      const slug = company.slug;
+      const location = randomElement(locations);
+      const locationType = randomElement(locationTypes);
+      const daysAgo = Math.floor(Math.random() * 14); // Posted within last 2 weeks
+      
+      await prisma.job.create({
+        data: {
+          externalId: generateExternalId(),
+          source: company.atsType,
+          title: template.title,
+          description: generateDescription(template),
+          requirements: [
+            `${template.skills[0]} experience required`,
+            'Strong problem-solving skills',
+            'Excellent communication skills',
+            'Ability to work in a team environment',
+          ],
+          location,
+          isRemote: locationType === 'REMOTE',
+          locationType,
+          employmentType: template.employmentType as EmploymentType,
+          experienceLevel: template.experienceLevel as ExperienceLevel,
+          salaryMin: template.salaryMin,
+          salaryMax: template.salaryMax,
+          salaryCurrency: 'INR',
+          salaryPeriod: 'YEARLY' as SalaryPeriod,
+          skills: template.skills,
+          department: template.department,
+          postedAt: new Date(Date.now() - daysAgo * 24 * 60 * 60 * 1000),
+          sourceUrl: `https://example.com/jobs/${slug}/${generateExternalId()}`,
+          companyId: company.id,
+        },
+      });
+      totalJobs++;
     }
+    console.log(`  ✓ ${company.name}: ${jobCount} jobs`);
   }
 
-  console.log(`  ✓ Created ${jobCount} jobs`);
+  console.log(`\n✅ Seed complete!`);
+  console.log(`   Companies: ${createdCompanies.length}`);
+  console.log(`   Jobs: ${totalJobs}`);
 }
 
-async function seedSkills(): Promise<void> {
-  console.log('Seeding skills...');
-
-  const skills = [
-    { name: 'TypeScript', slug: 'typescript', category: 'Programming Language' },
-    { name: 'JavaScript', slug: 'javascript', category: 'Programming Language' },
-    { name: 'Python', slug: 'python', category: 'Programming Language' },
-    { name: 'Go', slug: 'go', category: 'Programming Language' },
-    { name: 'Rust', slug: 'rust', category: 'Programming Language' },
-    { name: 'Java', slug: 'java', category: 'Programming Language' },
-    { name: 'React', slug: 'react', category: 'Framework' },
-    { name: 'Next.js', slug: 'nextjs', category: 'Framework' },
-    { name: 'Node.js', slug: 'nodejs', category: 'Runtime' },
-    { name: 'PostgreSQL', slug: 'postgresql', category: 'Database' },
-    { name: 'MongoDB', slug: 'mongodb', category: 'Database' },
-    { name: 'Redis', slug: 'redis', category: 'Database' },
-    { name: 'AWS', slug: 'aws', category: 'Cloud' },
-    { name: 'GCP', slug: 'gcp', category: 'Cloud' },
-    { name: 'Kubernetes', slug: 'kubernetes', category: 'Infrastructure' },
-    { name: 'Docker', slug: 'docker', category: 'Infrastructure' },
-    { name: 'Terraform', slug: 'terraform', category: 'Infrastructure' },
-    { name: 'GraphQL', slug: 'graphql', category: 'API' },
-    { name: 'REST', slug: 'rest', category: 'API' },
-    { name: 'Figma', slug: 'figma', category: 'Design Tool' },
-  ];
-
-  for (const skill of skills) {
-    await prisma.skill.upsert({
-      where: { slug: skill.slug },
-      update: {},
-      create: {
-        ...skill,
-        aliases: [],
-      },
-    });
-  }
-
-  console.log(`  ✓ Created ${skills.length} skills`);
-}
-
-// =============================================================================
-// MAIN
-// =============================================================================
-
-async function main(): Promise<void> {
-  console.log('🌱 Starting database seed...\n');
-
-  try {
-    // Clear existing data (optional - comment out to preserve data)
-    console.log('Clearing existing data...');
-    await prisma.job.deleteMany();
-    await prisma.scrape.deleteMany();
-    await prisma.company.deleteMany();
-    await prisma.skill.deleteMany();
-    await prisma.savedSearch.deleteMany();
-    console.log('  ✓ Cleared\n');
-
-    // Seed data
-    const companyIds = await seedCompanies();
-    console.log('');
-    await seedJobs(companyIds);
-    console.log('');
-    await seedSkills();
-
-    console.log('\n✅ Database seeded successfully!');
-  } catch (error) {
-    console.error('❌ Seed failed:', error);
-    throw error;
-  } finally {
+main()
+  .catch((e) => {
+    console.error('❌ Seed failed:', e);
+    process.exit(1);
+  })
+  .finally(async () => {
     await prisma.$disconnect();
-  }
-}
-
-main();
+  });

@@ -51,7 +51,7 @@ function mapApiJobToComponent(apiJob: JobListItem): Job {
     employmentType: apiJob.employmentType,
     salaryMin: apiJob.salary?.min || undefined,
     salaryMax: apiJob.salary?.max || undefined,
-    salaryCurrency: apiJob.salary?.currency || 'USD',
+    salaryCurrency: apiJob.salary?.currency || 'INR',
     skills: apiJob.skills || [],
     postedAt: apiJob.postedAt,
     isNew,

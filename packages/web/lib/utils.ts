@@ -14,15 +14,44 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 /**
- * Format salary range for display
+ * Format salary for display - India-focused with INR and Lakhs
  */
 export function formatSalary(
   min?: number | null,
   max?: number | null,
-  currency: string = 'USD'
+  currency: string = 'INR'
 ): string {
   if (!min && !max) return 'Salary not specified'
 
+  // For INR, use Lakhs/Crores format
+  if (currency === 'INR') {
+    const formatINR = (amount: number): string => {
+      if (amount >= 10000000) {
+        // Crores (1Cr = 10,000,000)
+        const crores = amount / 10000000;
+        return `₹${crores % 1 === 0 ? crores.toFixed(0) : crores.toFixed(1)}Cr`;
+      }
+      if (amount >= 100000) {
+        // Lakhs (1L = 100,000)
+        const lakhs = amount / 100000;
+        return `₹${lakhs % 1 === 0 ? lakhs.toFixed(0) : lakhs.toFixed(1)}L`;
+      }
+      // Under 1 lakh - show full number with Indian formatting
+      return `₹${amount.toLocaleString('en-IN')}`;
+    };
+
+    if (min && max && min !== max) {
+      return `${formatINR(min)} - ${formatINR(max)}`;
+    }
+    if (min) {
+      return formatINR(min);
+    }
+    if (max) {
+      return `Up to ${formatINR(max)}`;
+    }
+  }
+
+  // Fallback for other currencies (USD, etc.)
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency,
@@ -39,6 +68,19 @@ export function formatSalary(
     return `Up to ${formatter.format(max)}`
   }
   return 'Salary not specified'
+}
+
+/**
+ * Format Indian number with Lakhs/Crores
+ */
+export function formatIndianNumber(num: number): string {
+  if (num >= 10000000) {
+    return `${(num / 10000000).toFixed(1)}Cr`;
+  }
+  if (num >= 100000) {
+    return `${Math.round(num / 100000)}L`;
+  }
+  return num.toLocaleString('en-IN');
 }
 
 /**
@@ -108,9 +150,19 @@ export function debounce<T extends (...args: any[]) => any>(
 }
 
 /**
- * Format number with K/M suffix
+ * Format number with K/M suffix (international) or L/Cr (India)
  */
-export function formatCompactNumber(num: number): string {
+export function formatCompactNumber(num: number, useIndian: boolean = true): string {
+  if (useIndian) {
+    if (num >= 10000000) {
+      return (num / 10000000).toFixed(1).replace(/\.0$/, '') + 'Cr'
+    }
+    if (num >= 100000) {
+      return (num / 100000).toFixed(1).replace(/\.0$/, '') + 'L'
+    }
+    return num.toLocaleString('en-IN')
+  }
+  
   if (num >= 1000000) {
     return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M'
   }

@@ -55,7 +55,7 @@ function mapApiJobToComponent(apiJob: JobListItem): Job {
     employmentType: apiJob.employmentType,
     salaryMin: apiJob.salary?.min || undefined,
     salaryMax: apiJob.salary?.max || undefined,
-    salaryCurrency: apiJob.salary?.currency || 'USD',
+    salaryCurrency: apiJob.salary?.currency || 'INR',
     skills: apiJob.skills || [],
     postedAt: apiJob.postedAt,
     isNew,
@@ -72,7 +72,7 @@ const popularSearches = [
   'Full Stack',
   'DevOps',
   'Data Engineer',
-  'Product Manager',
+  'SDE',
 ]
 
 const categories = [
@@ -107,10 +107,10 @@ export default function HomePage() {
   const totalCompanies = topCompanies?.length || 0
 
   const stats = [
-    { label: 'Active Jobs', value: totalJobs > 0 ? totalJobs.toLocaleString() : '...', icon: Briefcase },
-    { label: 'Companies', value: totalCompanies > 0 ? totalCompanies.toLocaleString() : '...', icon: Building2 },
+    { label: 'Active Jobs', value: totalJobs > 0 ? totalJobs.toLocaleString('en-IN') : '...', icon: Briefcase },
+    { label: 'Companies', value: totalCompanies > 0 ? totalCompanies.toLocaleString('en-IN') : '...', icon: Building2 },
     { label: 'Updated Daily', value: '24/7', icon: TrendingUp },
-    { label: 'Free Forever', value: '$0', icon: Users },
+    { label: 'Free Forever', value: '₹0', icon: Users },
   ]
 
   const handleSearch = (e: React.FormEvent) => {
@@ -167,12 +167,12 @@ export default function HomePage() {
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-neutral-900 dark:text-neutral-50 mb-6 tracking-tight">
                 Find your next role
                 <br />
-                <span className="text-gradient">in tech</span>
+                <span className="text-gradient">in Indian tech</span>
               </h1>
 
               {/* Subheading */}
               <p className="text-lg md:text-xl text-neutral-600 dark:text-neutral-400 mb-8 max-w-xl mx-auto leading-relaxed">
-                Search jobs from thousands of companies. Filter by salary, location, skills, and more.
+                Search jobs from India's top startups. Filter by salary, location, skills, and more.
               </p>
 
               {/* Search */}

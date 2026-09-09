@@ -1,20 +1,20 @@
 {
   "source": "ashby",
   "companies": [
-    { "slug": "linear", "name": "Linear" },
-    { "slug": "vercel", "name": "Vercel" },
-    { "slug": "supabase", "name": "Supabase" },
-    { "slug": "railway", "name": "Railway" },
-    { "slug": "dbt-labs", "name": "dbt Labs" },
-    { "slug": "planetscale", "name": "PlanetScale" },
-    { "slug": "neon", "name": "Neon" },
-    { "slug": "resend", "name": "Resend" },
-    { "slug": "cal", "name": "Cal.com" },
-    { "slug": "mintlify", "name": "Mintlify" },
-    { "slug": "axiom", "name": "Axiom" },
-    { "slug": "raycast", "name": "Raycast" },
-    { "slug": "highlight", "name": "Highlight" },
-    { "slug": "inngest", "name": "Inngest" },
-    { "slug": "stytch", "name": "Stytch" }
+    { "slug": "groww", "name": "Groww" },
+    { "slug": "cred", "name": "CRED" },
+    { "slug": "jupiter", "name": "Jupiter" },
+    { "slug": "hasura", "name": "Hasura" },
+    { "slug": "setu", "name": "Setu" },
+    { "slug": "atlan", "name": "Atlan" },
+    { "slug": "yellow-ai", "name": "Yellow.ai" },
+    { "slug": "observe-ai", "name": "Observe.AI" },
+    { "slug": "postman", "name": "Postman" },
+    { "slug": "smallcase", "name": "Smallcase" },
+    { "slug": "cleartrip", "name": "Cleartrip" },
+    { "slug": "springworks", "name": "Springworks" },
+    { "slug": "keka-hr", "name": "Keka" },
+    { "slug": "leena-ai", "name": "Leena AI" },
+    { "slug": "fynd", "name": "Fynd" }
   ]
 }

@@ -129,13 +129,45 @@ export function formatJobForDisplay(job: JobListItem | JobDetail) {
 }
 
 /**
- * Format salary for display
+ * Format salary for display - India-focused with INR and Lakhs
  */
 export function formatSalary(salary: JobListItem['salary']): string {
   if (!salary) return '';
   
   const { min, max, currency, period } = salary;
+
+  // INR formatting with Lakhs/Crores
+  if (currency === 'INR') {
+    const formatINR = (n: number): string => {
+      if (n >= 10000000) {
+        // Crores (1Cr = 10,000,000)
+        const crores = n / 10000000;
+        return `₹${crores % 1 === 0 ? crores.toFixed(0) : crores.toFixed(1)}Cr`;
+      }
+      if (n >= 100000) {
+        // Lakhs (1L = 100,000)
+        const lakhs = n / 100000;
+        return `₹${lakhs % 1 === 0 ? lakhs.toFixed(0) : lakhs.toFixed(1)}L`;
+      }
+      return `₹${n.toLocaleString('en-IN')}`;
+    };
+
+    let range: string;
+    if (min && max && min !== max) {
+      range = `${formatINR(min)} - ${formatINR(max)}`;
+    } else if (min) {
+      range = formatINR(min);
+    } else if (max) {
+      range = `Up to ${formatINR(max)}`;
+    } else {
+      return '';
+    }
+
+    const periodLabel = period === 'yearly' ? '/yr' : period === 'monthly' ? '/mo' : '/hr';
+    return `${range}${periodLabel}`;
+  }
   
+  // Fallback for other currencies (USD, GBP, etc.)
   const formatNumber = (n: number) => {
     if (n >= 1000) {
       return `${Math.round(n / 1000)}k`;

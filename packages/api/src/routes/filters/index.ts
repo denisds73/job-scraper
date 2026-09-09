@@ -19,12 +19,12 @@ import {
 // =============================================================================
 
 const SALARY_RANGES = [
-  { min: 0, max: 50000, label: 'Under $50k' },
-  { min: 50000, max: 100000, label: '$50k - $100k' },
-  { min: 100000, max: 150000, label: '$100k - $150k' },
-  { min: 150000, max: 200000, label: '$150k - $200k' },
-  { min: 200000, max: 250000, label: '$200k - $250k' },
-  { min: 250000, max: null, label: '$250k+' },
+  { min: 0, max: 1000000, label: 'Under ₹10L' },
+  { min: 1000000, max: 2000000, label: '₹10L - ₹20L' },
+  { min: 2000000, max: 3500000, label: '₹20L - ₹35L' },
+  { min: 3500000, max: 5000000, label: '₹35L - ₹50L' },
+  { min: 5000000, max: 7500000, label: '₹50L - ₹75L' },
+  { min: 7500000, max: null, label: '₹75L+' },
 ];
 
 const LOCATION_TYPE_LABELS: Record<string, string> = {

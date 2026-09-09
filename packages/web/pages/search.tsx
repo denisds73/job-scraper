@@ -37,7 +37,7 @@ function mapApiJobToComponent(apiJob: JobListItem): Job {
     employmentType: apiJob.employmentType,
     salaryMin: apiJob.salary?.min || undefined,
     salaryMax: apiJob.salary?.max || undefined,
-    salaryCurrency: apiJob.salary?.currency || 'USD',
+    salaryCurrency: apiJob.salary?.currency || 'INR',
     skills: apiJob.skills || [],
     postedAt: apiJob.postedAt,
     isNew,
@@ -98,27 +98,31 @@ function parseQueryParams(query: Record<string, string | string[] | undefined>):
 }
 
 /**
- * Get salary filter key from min/max values
+ * Get salary filter key from min/max values (INR)
  */
 function getSalaryFilterKey(min?: number, max?: number): string | null {
-  if (!min && !max) return null
-  if (min && min >= 200000) return '200k+'
-  if (min && min >= 150000) return '150-200k'
-  if (min && min >= 100000) return '100-150k'
-  if (min && min >= 50000) return '50-100k'
-  return null
+  if (!min && !max) return null;
+  if (max && max <= 1000000) return 'under-10l';
+  if (min && min >= 7500000) return '75l-plus';
+  if (min && min >= 5000000) return '50-75l';
+  if (min && min >= 3500000) return '35-50l';
+  if (min && min >= 2000000) return '20-35l';
+  if (min && min >= 1000000) return '10-20l';
+  return null;
 }
 
 /**
- * Get salary min/max from filter key
+ * Get salary min/max from filter key (INR values)
  */
 function getSalaryRange(key: string): { min?: number; max?: number } {
   switch (key) {
-    case '50-100k': return { min: 50000, max: 100000 }
-    case '100-150k': return { min: 100000, max: 150000 }
-    case '150-200k': return { min: 150000, max: 200000 }
-    case '200k+': return { min: 200000 }
-    default: return {}
+    case 'under-10l': return { max: 1000000 };
+    case '10-20l': return { min: 1000000, max: 2000000 };
+    case '20-35l': return { min: 2000000, max: 3500000 };
+    case '35-50l': return { min: 3500000, max: 5000000 };
+    case '50-75l': return { min: 5000000, max: 7500000 };
+    case '75l-plus': return { min: 7500000 };
+    default: return {};
   }
 }
 
@@ -165,10 +169,12 @@ const defaultFilterGroups: FilterGroup[] = [
     label: 'Salary Range',
     type: 'checkbox',
     options: [
-      { id: '50-100k', label: '$50K – $100K' },
-      { id: '100-150k', label: '$100K – $150K' },
-      { id: '150-200k', label: '$150K – $200K' },
-      { id: '200k+', label: '$200K+' },
+      { id: 'under-10l', label: 'Under ₹10L' },
+      { id: '10-20l', label: '₹10L - ₹20L' },
+      { id: '20-35l', label: '₹20L - ₹35L' },
+      { id: '35-50l', label: '₹35L - ₹50L' },
+      { id: '50-75l', label: '₹50L - ₹75L' },
+      { id: '75l-plus', label: '₹75L+' },
     ],
   },
 ]
@@ -177,7 +183,7 @@ const filterLabels: Record<string, Record<string, string>> = {
   'work-type': { remote: 'Remote', hybrid: 'Hybrid', onsite: 'On-site' },
   employment: { 'full-time': 'Full-time', 'part-time': 'Part-time', contract: 'Contract', internship: 'Internship' },
   experience: { entry: 'Entry', mid: 'Mid', senior: 'Senior', staff: 'Staff', principal: 'Principal' },
-  salary: { '50-100k': '$50-100K', '100-150k': '$100-150K', '150-200k': '$150-200K', '200k+': '$200K+' },
+  salary: { 'under-10l': 'Under ₹10L', '10-20l': '₹10-20L', '20-35l': '₹20-35L', '35-50l': '₹35-50L', '50-75l': '₹50-75L', '75l-plus': '₹75L+' },
   skills: {},
 }
 
