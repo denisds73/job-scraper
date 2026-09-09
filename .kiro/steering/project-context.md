@@ -18,6 +18,7 @@ This directory contains comprehensive guidance for building JobScout with Google
 | `10-anti-patterns.md` | What NOT to do |
 | `11-review-checklist.md` | Quality gates and checklists |
 | `12-knowledge-maintenance.md` | When/how to update knowledge base |
+| `13-mandatory-verification.md` | Required testing after every code change |
 
 ## Quick Reference
 
