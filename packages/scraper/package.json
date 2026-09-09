@@ -1,0 +1,28 @@
+{
+  "name": "@jobscout/scraper",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/main.ts",
+    "build": "tsup",
+    "start": "node dist/main.js",
+    "scrape": "tsx src/main.ts",
+    "scrape:greenhouse": "tsx src/main.ts --source=greenhouse",
+    "scrape:lever": "tsx src/main.ts --source=lever",
+    "lint": "eslint src/",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist node_modules"
+  },
+  "dependencies": {
+    "@jobscout/shared": "*",
+    "@prisma/client": "^5.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.10",
+    "tsup": "^8.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.3"
+  }
+}

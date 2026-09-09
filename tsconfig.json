@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@jobscout/shared": ["packages/shared/src"],
+      "@jobscout/shared/*": ["packages/shared/src/*"]
+    }
+  },
+  "include": [],
+  "references": [
+    { "path": "packages/shared" },
+    { "path": "packages/web" },
+    { "path": "packages/api" },
+    { "path": "packages/scraper" }
+  ]
+}

@@ -89,6 +89,8 @@
 
 ## Phase 0: Foundation
 
+**Status: COMPLETE** (Completed: 2026-09-10)
+
 **Duration:** 3-5 days  
 **Goal:** Establish monorepo structure and shared infrastructure
 
@@ -112,16 +114,16 @@ job-scraper/
 
 ### 0.2 Tasks
 
-| Task | Priority | Est. Hours |
-|------|----------|------------|
-| Initialize Turborepo | P0 | 2h |
-| Move ui-samples → packages/web | P0 | 2h |
-| Create packages/shared with types | P0 | 3h |
-| Create packages/api scaffold | P0 | 2h |
-| Create packages/scraper scaffold | P0 | 2h |
-| Configure TypeScript paths | P0 | 1h |
-| Setup Docker Compose (Postgres, Redis) | P1 | 2h |
-| Configure ESLint/Prettier for monorepo | P1 | 1h |
+| Task | Priority | Est. Hours | Status |
+|------|----------|------------|--------|
+| Initialize Turborepo | P0 | 2h | ✅ DONE |
+| Move ui-samples → packages/web | P0 | 2h | ✅ DONE |
+| Create packages/shared with types | P0 | 3h | ✅ DONE |
+| Create packages/api scaffold | P0 | 2h | ✅ DONE |
+| Create packages/scraper scaffold | P0 | 2h | ✅ DONE |
+| Configure TypeScript paths | P0 | 1h | ✅ DONE |
+| Setup Docker Compose (Postgres, Redis) | P1 | 2h | ✅ DONE |
+| Configure ESLint/Prettier for monorepo | P1 | 1h | ✅ DONE |
 
 ### 0.3 Shared Types (`packages/shared/src/types/`)
 
@@ -186,11 +188,11 @@ export type CompanySize = '1-10' | '11-50' | '51-200' | '201-500' | '501-1000' |
 
 ### 0.4 Deliverables
 
-- [ ] Turborepo monorepo working
-- [ ] All packages build successfully
-- [ ] Shared types importable from all packages
-- [ ] Local Docker services running
-- [ ] README with setup instructions
+- [x] Turborepo monorepo working
+- [x] All packages build successfully
+- [x] Shared types importable from all packages
+- [x] Local Docker services configured
+- [x] README with setup instructions (in .env.example)
 
 ---
 
