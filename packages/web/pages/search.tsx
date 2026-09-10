@@ -195,10 +195,16 @@ export default function SearchPage() {
   const router = useRouter()
   const [isDarkMode, setIsDarkMode] = useState(false)
   const [isFilterOpen, setIsFilterOpen] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
   
   // Local input state (for debouncing)
   const [searchInput, setSearchInput] = useState('')
   const [locationInput, setLocationInput] = useState('')
+
+  // Handle hydration - mark as mounted after first render
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   // Parse URL params
   const { searchParams, selectedFilters, sortBy: urlSortBy } = useMemo(
@@ -444,12 +450,12 @@ export default function SearchPage() {
                     {searchParams.q ? `"${searchParams.q}"` : 'All Jobs'}
                   </h1>
                   <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                    {isLoading ? (
-                      'Loading...'
+                    {!isMounted || isLoading ? (
+                      <span>Loading jobs...</span>
                     ) : (
                       `${totalResults.toLocaleString()} job${totalResults !== 1 ? 's' : ''} found`
                     )}
-                    {isFetching && !isLoading && ' • Updating...'}
+                    {isMounted && isFetching && !isLoading && ' • Updating...'}
                   </p>
                 </div>
 

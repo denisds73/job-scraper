@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { 
@@ -94,6 +94,12 @@ export default function HomePage() {
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState('')
   const [isDarkMode, setIsDarkMode] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
+
+  // Handle hydration
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   // Fetch real data
   const { data: jobsData, isLoading: isLoadingJobs, error: jobsError } = useRecentJobs(6)
@@ -107,8 +113,8 @@ export default function HomePage() {
   const totalCompanies = topCompanies?.length || 0
 
   const stats = [
-    { label: 'Active Jobs', value: totalJobs > 0 ? totalJobs.toLocaleString('en-IN') : '...', icon: Briefcase },
-    { label: 'Companies', value: totalCompanies > 0 ? totalCompanies.toLocaleString('en-IN') : '...', icon: Building2 },
+    { label: 'Active Jobs', value: isMounted && totalJobs > 0 ? totalJobs.toLocaleString('en-IN') : '...', icon: Briefcase },
+    { label: 'Companies', value: isMounted && totalCompanies > 0 ? totalCompanies.toLocaleString('en-IN') : '...', icon: Building2 },
     { label: 'Updated Daily', value: '24/7', icon: TrendingUp },
     { label: 'Free Forever', value: '₹0', icon: Users },
   ]
@@ -160,7 +166,7 @@ export default function HomePage() {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-500 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-600"></span>
                 </span>
-                {totalJobs > 0 ? `${totalJobs.toLocaleString()} jobs available` : 'Jobs from top tech companies'}
+                {isMounted && totalJobs > 0 ? `${totalJobs.toLocaleString()} jobs available` : 'Jobs from top tech companies'}
               </div>
 
               {/* Heading */}
