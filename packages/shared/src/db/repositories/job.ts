@@ -495,11 +495,48 @@ export class JobRepository extends BaseRepository<
     }
 
     if (filters) {
-      // Location
+      // Location - for India, use more specific matching to avoid "Indiana" etc.
       if (filters.location) {
-        conditions.push({
-          location: { contains: filters.location, mode: 'insensitive' },
-        });
+        if (filters.location.toLowerCase() === 'india') {
+          // Match "India" specifically (not Indiana, Indianapolis, etc.)
+          // Using Indian city names and explicit "India" patterns
+          conditions.push({
+            OR: [
+              // Explicit India patterns (India followed by comma, period, space+non-alpha, or end)
+              { location: { endsWith: 'India', mode: 'insensitive' } },
+              { location: { contains: 'India)', mode: 'insensitive' } },
+              { location: { contains: 'India,', mode: 'insensitive' } },
+              { location: { contains: '- India', mode: 'insensitive' } },
+              { location: { equals: 'India', mode: 'insensitive' } },
+              // Remote India
+              { location: { contains: 'Remote - India', mode: 'insensitive' } },
+              { location: { contains: 'Remote India', mode: 'insensitive' } },
+              // Indian cities - these are unambiguous
+              { location: { contains: 'Bangalore', mode: 'insensitive' } },
+              { location: { contains: 'Bengaluru', mode: 'insensitive' } },
+              { location: { contains: 'Mumbai', mode: 'insensitive' } },
+              { location: { contains: 'Delhi', mode: 'insensitive' } },
+              { location: { contains: 'Hyderabad', mode: 'insensitive' } },
+              { location: { contains: 'Pune', mode: 'insensitive' } },
+              { location: { contains: 'Chennai', mode: 'insensitive' } },
+              { location: { contains: 'Gurugram', mode: 'insensitive' } },
+              { location: { contains: 'Gurgaon', mode: 'insensitive' } },
+              { location: { contains: 'Noida', mode: 'insensitive' } },
+              { location: { contains: 'Kolkata', mode: 'insensitive' } },
+              { location: { contains: 'Ahmedabad', mode: 'insensitive' } },
+              { location: { contains: 'Jaipur', mode: 'insensitive' } },
+              { location: { contains: 'Kochi', mode: 'insensitive' } },
+              { location: { contains: 'Thiruvananthapuram', mode: 'insensitive' } },
+              // IN- prefix used by some companies for India
+              { location: { contains: 'IN-', mode: 'insensitive' } },
+              { location: { startsWith: 'IN ', mode: 'insensitive' } },
+            ],
+          });
+        } else {
+          conditions.push({
+            location: { contains: filters.location, mode: 'insensitive' },
+          });
+        }
       }
 
       // Remote filter

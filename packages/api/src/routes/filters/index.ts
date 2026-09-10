@@ -73,8 +73,8 @@ const filtersRoutes: FastifyPluginAsync = async (fastify) => {
       const filters = await fastify.cache.wrap(
         cacheKey,
         async () => {
-          // Get facets from database
-          const facets = await fastify.repositories.jobs.getFacets();
+          // Get facets from database - filtered for India only
+          const facets = await fastify.repositories.jobs.getFacets({ location: 'India' });
 
           // Build filter options with labels
           const locationTypes = LOCATION_TYPES.map((type) => ({

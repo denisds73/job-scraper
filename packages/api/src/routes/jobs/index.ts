@@ -33,10 +33,14 @@ function parseArrayParam<T>(param: T | T[] | undefined): T[] | undefined {
   return Array.isArray(param) ? param : [param];
 }
 
+// India-focused: Default location filter to show only India jobs
+const DEFAULT_LOCATION_FILTER = 'India';
+
 function buildFilters(query: JobSearchQuery): JobFilters {
   return {
     query: query.q,
-    location: query.location,
+    // Use India as default location if not specified
+    location: query.location || DEFAULT_LOCATION_FILTER,
     isRemote: query.remote,
     locationType: parseArrayParam(query.locationType) as LocationType[] | undefined,
     employmentType: parseArrayParam(query.employmentType) as EmploymentType[] | undefined,
@@ -156,6 +160,7 @@ const jobsRoutes: FastifyPluginAsync = async (fastify) => {
           const searchResult = await fastify.repositories.jobs.search({
             filters: {
               source: query.source ? [query.source] : undefined,
+              location: DEFAULT_LOCATION_FILTER, // India-focused
             },
             pagination: { page: query.page, limit: query.limit },
           });
