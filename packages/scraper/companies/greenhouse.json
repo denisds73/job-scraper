@@ -32,6 +32,13 @@
     {"slug": "robinhood", "name": "Robinhood", "careerPageUrl": "https://robinhood.com/careers"},
     {"slug": "stripe", "name": "Stripe", "careerPageUrl": "https://stripe.com/jobs"},
     {"slug": "coinbase", "name": "Coinbase", "careerPageUrl": "https://www.coinbase.com/careers"},
-    {"slug": "airbnb", "name": "Airbnb", "careerPageUrl": "https://careers.airbnb.com"}
+    {"slug": "airbnb", "name": "Airbnb", "careerPageUrl": "https://careers.airbnb.com"},
+    {"slug": "groww", "name": "Groww", "careerPageUrl": "https://groww.in/careers"},
+    {"slug": "slice", "name": "Slice", "careerPageUrl": "https://www.sliceit.com/careers"},
+    {"slug": "notion", "name": "Notion", "careerPageUrl": "https://notion.so/careers"},
+    {"slug": "plaid", "name": "Plaid", "careerPageUrl": "https://plaid.com/careers"},
+    {"slug": "ramp", "name": "Ramp", "careerPageUrl": "https://ramp.com/careers"},
+    {"slug": "rippling", "name": "Rippling", "careerPageUrl": "https://www.rippling.com/careers"},
+    {"slug": "openai", "name": "OpenAI", "careerPageUrl": "https://openai.com/careers"}
   ]
 }
