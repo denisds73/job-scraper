@@ -199,7 +199,7 @@ export const JobCard: React.FC<JobCardProps> = ({
 
             {/* Posted time - compact only */}
             {isCompact && (
-              <span className="inline-flex items-center gap-1 text-neutral-400">
+              <span className="inline-flex items-center gap-1 text-neutral-400" suppressHydrationWarning>
                 <Clock size={14} strokeWidth={2} />
                 {formatRelativeTime(job.postedAt)}
               </span>
@@ -211,7 +211,7 @@ export const JobCard: React.FC<JobCardProps> = ({
             <div className="flex flex-wrap items-center gap-2 mb-3">
               <JobTypeBadge type={job.locationType} size="sm" />
               <JobTypeBadge type={job.employmentType} size="sm" />
-              <span className="text-xs text-neutral-400 dark:text-neutral-500">
+              <span className="text-xs text-neutral-400 dark:text-neutral-500" suppressHydrationWarning>
                 {formatRelativeTime(job.postedAt)}
               </span>
             </div>

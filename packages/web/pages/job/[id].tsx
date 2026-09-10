@@ -312,7 +312,7 @@ export default function JobDetailPage() {
                           <MapPin size={15} strokeWidth={2} />
                           {job.location}
                         </span>
-                        <span className="inline-flex items-center gap-1.5">
+                        <span className="inline-flex items-center gap-1.5" suppressHydrationWarning>
                           <Clock size={15} strokeWidth={2} />
                           {formatRelativeTime(job.postedAt)}
                         </span>

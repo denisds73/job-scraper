@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
+import { useState, useEffect } from 'react'
 
 /* ============================================
    UTILITY FUNCTIONS
@@ -11,6 +12,18 @@ import { twMerge } from 'tailwind-merge'
  */
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
+}
+
+/**
+ * Hook to detect if component is mounted (client-side)
+ * Use this for hydration-sensitive content like dates/times
+ */
+export function useIsMounted(): boolean {
+  const [isMounted, setIsMounted] = useState(false)
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
+  return isMounted
 }
 
 /**
