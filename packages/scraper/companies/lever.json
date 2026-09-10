@@ -1,5 +1,5 @@
 {
-  "source": "lever",
-  "description": "Companies with verified working Lever job boards",
-  "companies": []
+  "companies": [
+    {"slug": "spotify", "name": "Spotify", "careerPageUrl": "https://www.lifeatspotify.com/jobs"}
+  ]
 }

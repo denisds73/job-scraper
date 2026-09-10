@@ -1,21 +1,21 @@
 {
-  "source": "ashby",
-  "description": "Companies with verified working Ashby job boards",
   "companies": [
-    { "slug": "linear", "name": "Linear", "hq": "San Francisco" },
-    { "slug": "supabase", "name": "Supabase", "hq": "San Francisco" },
-    { "slug": "railway", "name": "Railway", "hq": "San Francisco" },
-    { "slug": "resend", "name": "Resend", "hq": "San Francisco" },
-    { "slug": "neon", "name": "Neon", "hq": "San Francisco" },
-    { "slug": "cal", "name": "Cal.com", "hq": "San Francisco" },
-    { "slug": "dbt-labs", "name": "dbt Labs", "hq": "Philadelphia" },
-    { "slug": "planetscale", "name": "PlanetScale", "hq": "San Francisco" },
-    { "slug": "axiom", "name": "Axiom", "hq": "San Francisco" },
-    { "slug": "raycast", "name": "Raycast", "hq": "London" },
-    { "slug": "mintlify", "name": "Mintlify", "hq": "San Francisco" },
-    { "slug": "inngest", "name": "Inngest", "hq": "San Francisco" },
-    { "slug": "stytch", "name": "Stytch", "hq": "San Francisco" },
-    { "slug": "highlight", "name": "Highlight", "hq": "San Francisco" },
-    { "slug": "trigger", "name": "Trigger.dev", "hq": "London" }
+    {"slug": "linear", "name": "Linear", "careerPageUrl": "https://linear.app/careers"},
+    {"slug": "supabase", "name": "Supabase", "careerPageUrl": "https://supabase.com/careers"},
+    {"slug": "railway", "name": "Railway", "careerPageUrl": "https://railway.app/careers"},
+    {"slug": "resend", "name": "Resend", "careerPageUrl": "https://resend.com/careers"},
+    {"slug": "neon", "name": "Neon", "careerPageUrl": "https://neon.tech/careers"},
+    {"slug": "axiom", "name": "Axiom", "careerPageUrl": "https://axiom.co/careers"},
+    {"slug": "mintlify", "name": "Mintlify", "careerPageUrl": "https://mintlify.com/careers"},
+    {"slug": "inngest", "name": "Inngest", "careerPageUrl": "https://inngest.com/careers"},
+    {"slug": "stytch", "name": "Stytch", "careerPageUrl": "https://stytch.com/careers"},
+    {"slug": "clerk", "name": "Clerk", "careerPageUrl": "https://clerk.com/careers"},
+    {"slug": "infisical", "name": "Infisical", "careerPageUrl": "https://infisical.com/careers"},
+    {"slug": "langfuse", "name": "Langfuse", "careerPageUrl": "https://langfuse.com/careers"},
+    {"slug": "twenty", "name": "Twenty", "careerPageUrl": "https://twenty.com/careers"},
+    {"slug": "plane", "name": "Plane", "careerPageUrl": "https://plane.so/careers"},
+    {"slug": "n8n", "name": "n8n", "careerPageUrl": "https://n8n.io/careers"},
+    {"slug": "airbyte", "name": "Airbyte", "careerPageUrl": "https://airbyte.com/careers"},
+    {"slug": "posthog", "name": "PostHog", "careerPageUrl": "https://posthog.com/careers"}
   ]
 }
