@@ -190,7 +190,7 @@ export default function JobDetailPage() {
         )}
       </Head>
 
-      <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950">
+      <div className="min-h-[100dvh] bg-neutral-50 dark:bg-neutral-950">
         <Header isDarkMode={isDarkMode} onThemeToggle={() => setIsDarkMode(!isDarkMode)} />
 
         {/* ==========================================
@@ -214,7 +214,7 @@ export default function JobDetailPage() {
                   Jobs
                 </a>
                 <ChevronRight size={14} className="text-neutral-400" />
-                <span className="text-neutral-900 dark:text-neutral-100 font-medium truncate max-w-[200px]">
+                <span className="text-neutral-900 dark:text-neutral-100 font-medium truncate max-w-48">
                   {job?.title || 'Loading...'}
                 </span>
               </nav>

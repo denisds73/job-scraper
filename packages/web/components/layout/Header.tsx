@@ -97,6 +97,7 @@ export const Header: React.FC<HeaderProps> = ({
                 'hover:bg-neutral-200 dark:hover:bg-neutral-700',
                 'transition-colors duration-150'
               )}
+              aria-label="Search jobs"
             >
               <Search size={16} strokeWidth={2} />
               <span>Search...</span>

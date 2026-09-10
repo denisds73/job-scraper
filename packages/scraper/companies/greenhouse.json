@@ -39,6 +39,15 @@
     {"slug": "plaid", "name": "Plaid", "careerPageUrl": "https://plaid.com/careers"},
     {"slug": "ramp", "name": "Ramp", "careerPageUrl": "https://ramp.com/careers"},
     {"slug": "rippling", "name": "Rippling", "careerPageUrl": "https://www.rippling.com/careers"},
-    {"slug": "openai", "name": "OpenAI", "careerPageUrl": "https://openai.com/careers"}
+    {"slug": "openai", "name": "OpenAI", "careerPageUrl": "https://openai.com/careers"},
+    
+    {"slug": "rubrik", "name": "Rubrik", "careerPageUrl": "https://www.rubrik.com/company/careers"},
+    {"slug": "zenoti", "name": "Zenoti", "careerPageUrl": "https://www.zenoti.com/careers"},
+    {"slug": "pubmatic", "name": "PubMatic", "careerPageUrl": "https://pubmatic.com/careers"},
+    {"slug": "commvault", "name": "Commvault", "careerPageUrl": "https://www.commvault.com/careers"},
+    {"slug": "hackerrank", "name": "HackerRank", "careerPageUrl": "https://www.hackerrank.com/careers"},
+    {"slug": "samsara", "name": "Samsara", "careerPageUrl": "https://www.samsara.com/company/careers"},
+    {"slug": "amplitude", "name": "Amplitude", "careerPageUrl": "https://amplitude.com/careers"},
+    {"slug": "vonage", "name": "Vonage", "careerPageUrl": "https://www.vonage.com/careers"}
   ]
 }

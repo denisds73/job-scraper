@@ -364,7 +364,7 @@ export default function SearchPage() {
         <title>{pageTitle} - JobScout</title>
       </Head>
 
-      <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950">
+      <div className="min-h-[100dvh] bg-neutral-50 dark:bg-neutral-950">
         <Header isDarkMode={isDarkMode} onThemeToggle={() => setIsDarkMode(!isDarkMode)} />
 
         {/* ==========================================

@@ -139,7 +139,7 @@ export default function HomePage() {
         <meta name="description" content="Discover thousands of tech jobs from top companies. Filter by salary, location, and skills." />
       </Head>
 
-      <div className="min-h-screen bg-neutral-0 dark:bg-neutral-950">
+      <div className="min-h-[100dvh] bg-neutral-0 dark:bg-neutral-950">
         <Header isDarkMode={isDarkMode} onThemeToggle={() => setIsDarkMode(!isDarkMode)} />
 
         {/* ==========================================
