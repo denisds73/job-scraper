@@ -1,0 +1,744 @@
+{
+  "metadata": {
+    "description": "Indian IT companies for job scraping - Personal use",
+    "lastUpdated": "2024-09-10",
+    "totalCompanies": 150
+  },
+  "chennai": {
+    "tier1": [
+      {
+        "name": "Zoho",
+        "careerUrl": "https://careers.zohocorp.com/jobs/Ede1qBz0GMWbYkrR5hMD",
+        "type": "product",
+        "employees": "10000+",
+        "notes": "SaaS giant, heavy hiring"
+      },
+      {
+        "name": "Freshworks",
+        "careerUrl": "https://www.freshworks.com/company/careers/",
+        "type": "product",
+        "employees": "5000+",
+        "notes": "CRM/ITSM SaaS"
+      },
+      {
+        "name": "Chargebee",
+        "careerUrl": "https://www.chargebee.com/company/careers/",
+        "type": "product",
+        "employees": "1000+",
+        "notes": "Subscription billing"
+      },
+      {
+        "name": "SurveySparrow",
+        "careerUrl": "https://surveysparrow.com/careers/",
+        "type": "product",
+        "employees": "500+",
+        "notes": "Survey platform"
+      },
+      {
+        "name": "Kissflow",
+        "careerUrl": "https://kissflow.com/careers/",
+        "type": "product",
+        "employees": "500+",
+        "notes": "Low-code platform"
+      },
+      {
+        "name": "Facilio",
+        "careerUrl": "https://facilio.com/careers/",
+        "type": "product",
+        "employees": "200+",
+        "notes": "PropTech"
+      },
+      {
+        "name": "Kovai.co",
+        "careerUrl": "https://www.kovai.co/careers",
+        "type": "product",
+        "employees": "200+",
+        "notes": "Enterprise integration"
+      },
+      {
+        "name": "Intellect Design Arena",
+        "careerUrl": "https://www.intellectdesign.com/careers/",
+        "type": "product",
+        "employees": "5000+",
+        "notes": "Banking software"
+      },
+      {
+        "name": "Ramco Systems",
+        "careerUrl": "https://www.ramco.com/careers/",
+        "type": "product",
+        "employees": "3000+",
+        "notes": "ERP/HR software"
+      },
+      {
+        "name": "ELGI Equipments",
+        "careerUrl": "https://www.elgi.com/careers/",
+        "type": "manufacturing",
+        "employees": "2000+",
+        "notes": "Industrial equipment"
+      }
+    ],
+    "tier2": [
+      {
+        "name": "TCS Chennai",
+        "careerUrl": "https://www.tcs.com/careers",
+        "type": "services",
+        "employees": "50000+"
+      },
+      {
+        "name": "Infosys Chennai",
+        "careerUrl": "https://www.infosys.com/careers/",
+        "type": "services",
+        "employees": "20000+"
+      },
+      {
+        "name": "Wipro Chennai",
+        "careerUrl": "https://careers.wipro.com/",
+        "type": "services",
+        "employees": "15000+"
+      },
+      {
+        "name": "Cognizant Chennai",
+        "careerUrl": "https://careers.cognizant.com/",
+        "type": "services",
+        "employees": "20000+"
+      },
+      {
+        "name": "HCL Chennai",
+        "careerUrl": "https://www.hcltech.com/careers",
+        "type": "services",
+        "employees": "10000+"
+      },
+      {
+        "name": "Capgemini Chennai",
+        "careerUrl": "https://www.capgemini.com/in-en/careers/",
+        "type": "services",
+        "employees": "10000+"
+      },
+      {
+        "name": "Accenture Chennai",
+        "careerUrl": "https://www.accenture.com/in-en/careers",
+        "type": "services",
+        "employees": "15000+"
+      },
+      {
+        "name": "IBM Chennai",
+        "careerUrl": "https://www.ibm.com/careers",
+        "type": "services",
+        "employees": "5000+"
+      },
+      {
+        "name": "PayPal Chennai",
+        "careerUrl": "https://careers.pypl.com/",
+        "type": "fintech",
+        "employees": "3000+"
+      },
+      {
+        "name": "Amazon Chennai",
+        "careerUrl": "https://www.amazon.jobs/en/locations/chennai-india",
+        "type": "tech",
+        "employees": "5000+"
+      }
+    ],
+    "tier3": [
+      {"name": "ThoughtWorks Chennai", "careerUrl": "https://www.thoughtworks.com/careers", "type": "consulting"},
+      {"name": "Mphasis Chennai", "careerUrl": "https://www.mphasis.com/careers.html", "type": "services"},
+      {"name": "Clarivate Chennai", "careerUrl": "https://clarivate.com/careers/", "type": "analytics"},
+      {"name": "AppViewX", "careerUrl": "https://www.appviewx.com/company/careers/", "type": "security"},
+      {"name": "Pipecandy", "careerUrl": "https://pipecandy.com/careers/", "type": "data"},
+      {"name": "Paperflite", "careerUrl": "https://www.paperflite.com/careers", "type": "martech"},
+      {"name": "Workativ", "careerUrl": "https://workativ.com/careers/", "type": "ai"},
+      {"name": "Technovity", "careerUrl": "https://technovity.com/careers/", "type": "software"},
+      {"name": "Agira Technologies", "careerUrl": "https://www.agiratech.com/careers/", "type": "software"},
+      {"name": "Codingmart", "careerUrl": "https://www.codingmart.com/careers/", "type": "agency"}
+    ]
+  },
+  "bangalore": {
+    "tier1_unicorns": [
+      {
+        "name": "Flipkart",
+        "careerUrl": "https://www.flipkartcareers.com/",
+        "type": "ecommerce",
+        "employees": "30000+",
+        "notes": "Largest e-commerce"
+      },
+      {
+        "name": "Razorpay",
+        "careerUrl": "https://razorpay.com/jobs/",
+        "type": "fintech",
+        "employees": "3000+",
+        "notes": "Payments"
+      },
+      {
+        "name": "Swiggy",
+        "careerUrl": "https://careers.swiggy.com/",
+        "type": "foodtech",
+        "employees": "5000+",
+        "notes": "Food delivery"
+      },
+      {
+        "name": "Zerodha",
+        "careerUrl": "https://zerodha.com/careers/",
+        "type": "fintech",
+        "employees": "1500+",
+        "notes": "Stock trading"
+      },
+      {
+        "name": "PhonePe",
+        "careerUrl": "https://www.phonepe.com/careers/",
+        "type": "fintech",
+        "employees": "5000+",
+        "notes": "UPI payments"
+      },
+      {
+        "name": "Ola",
+        "careerUrl": "https://www.olacabs.com/careers",
+        "type": "mobility",
+        "employees": "5000+",
+        "notes": "Ride hailing"
+      },
+      {
+        "name": "BigBasket",
+        "careerUrl": "https://www.bigbasket.com/careers/",
+        "type": "ecommerce",
+        "employees": "3000+",
+        "notes": "Grocery"
+      },
+      {
+        "name": "BYJU'S",
+        "careerUrl": "https://byjus.com/careers/",
+        "type": "edtech",
+        "employees": "10000+",
+        "notes": "EdTech giant"
+      },
+      {
+        "name": "Unacademy",
+        "careerUrl": "https://unacademy.com/careers",
+        "type": "edtech",
+        "employees": "3000+",
+        "notes": "EdTech"
+      },
+      {
+        "name": "upGrad",
+        "careerUrl": "https://www.upgrad.com/careers/",
+        "type": "edtech",
+        "employees": "3000+",
+        "notes": "Higher Ed"
+      },
+      {
+        "name": "Urban Company",
+        "careerUrl": "https://www.urbancompany.com/careers",
+        "type": "services",
+        "employees": "2000+",
+        "notes": "Home services"
+      },
+      {
+        "name": "Zepto",
+        "careerUrl": "https://www.zeptonow.com/careers",
+        "type": "ecommerce",
+        "employees": "2000+",
+        "notes": "Quick commerce"
+      },
+      {
+        "name": "Dunzo",
+        "careerUrl": "https://www.dunzo.com/careers",
+        "type": "delivery",
+        "employees": "1000+",
+        "notes": "Hyperlocal"
+      },
+      {
+        "name": "Jupiter",
+        "careerUrl": "https://jupiter.money/careers/",
+        "type": "fintech",
+        "employees": "500+",
+        "notes": "Neobank"
+      },
+      {
+        "name": "Fi Money",
+        "careerUrl": "https://fi.money/careers",
+        "type": "fintech",
+        "employees": "500+",
+        "notes": "Neobank"
+      },
+      {
+        "name": "Smallcase",
+        "careerUrl": "https://www.smallcase.com/careers",
+        "type": "fintech",
+        "employees": "300+",
+        "notes": "Investment"
+      },
+      {
+        "name": "ShareChat",
+        "careerUrl": "https://sharechat.com/careers",
+        "type": "social",
+        "employees": "2000+",
+        "notes": "Social media"
+      },
+      {
+        "name": "Licious",
+        "careerUrl": "https://www.licious.in/careers",
+        "type": "d2c",
+        "employees": "1000+",
+        "notes": "D2C meat"
+      }
+    ],
+    "tier1_mnc": [
+      {
+        "name": "Google Bangalore",
+        "careerUrl": "https://careers.google.com/jobs/results/?location=Bangalore",
+        "type": "tech",
+        "employees": "10000+"
+      },
+      {
+        "name": "Microsoft Bangalore",
+        "careerUrl": "https://careers.microsoft.com/",
+        "type": "tech",
+        "employees": "10000+"
+      },
+      {
+        "name": "Amazon Bangalore",
+        "careerUrl": "https://www.amazon.jobs/en/locations/bangalore-india",
+        "type": "tech",
+        "employees": "20000+"
+      },
+      {
+        "name": "Meta Bangalore",
+        "careerUrl": "https://www.metacareers.com/",
+        "type": "tech",
+        "employees": "2000+"
+      },
+      {
+        "name": "Apple Bangalore",
+        "careerUrl": "https://www.apple.com/careers/in/",
+        "type": "tech",
+        "employees": "5000+"
+      },
+      {
+        "name": "Uber Bangalore",
+        "careerUrl": "https://www.uber.com/careers/",
+        "type": "tech",
+        "employees": "2000+"
+      },
+      {
+        "name": "LinkedIn Bangalore",
+        "careerUrl": "https://careers.linkedin.com/",
+        "type": "tech",
+        "employees": "2000+"
+      },
+      {
+        "name": "Salesforce Bangalore",
+        "careerUrl": "https://www.salesforce.com/company/careers/",
+        "type": "saas",
+        "employees": "3000+"
+      },
+      {
+        "name": "SAP Labs Bangalore",
+        "careerUrl": "https://www.sap.com/careers.html",
+        "type": "enterprise",
+        "employees": "10000+"
+      },
+      {
+        "name": "Oracle Bangalore",
+        "careerUrl": "https://www.oracle.com/careers/",
+        "type": "enterprise",
+        "employees": "15000+"
+      },
+      {
+        "name": "VMware Bangalore",
+        "careerUrl": "https://careers.vmware.com/",
+        "type": "infrastructure",
+        "employees": "5000+"
+      },
+      {
+        "name": "Cisco Bangalore",
+        "careerUrl": "https://jobs.cisco.com/",
+        "type": "networking",
+        "employees": "10000+"
+      },
+      {
+        "name": "Intel Bangalore",
+        "careerUrl": "https://jobs.intel.com/",
+        "type": "semiconductor",
+        "employees": "5000+"
+      },
+      {
+        "name": "Qualcomm Bangalore",
+        "careerUrl": "https://www.qualcomm.com/company/careers",
+        "type": "semiconductor",
+        "employees": "5000+"
+      },
+      {
+        "name": "NVIDIA Bangalore",
+        "careerUrl": "https://www.nvidia.com/en-us/about-nvidia/careers/",
+        "type": "semiconductor",
+        "employees": "2000+"
+      },
+      {
+        "name": "ServiceNow Bangalore",
+        "careerUrl": "https://www.servicenow.com/careers.html",
+        "type": "saas",
+        "employees": "2000+"
+      },
+      {
+        "name": "Atlassian Bangalore",
+        "careerUrl": "https://www.atlassian.com/company/careers",
+        "type": "saas",
+        "employees": "1000+"
+      },
+      {
+        "name": "Adobe Bangalore",
+        "careerUrl": "https://www.adobe.com/careers.html",
+        "type": "software",
+        "employees": "5000+"
+      }
+    ],
+    "tier2_saas": [
+      {"name": "BrowserStack", "careerUrl": "https://www.browserstack.com/careers", "type": "devtools"},
+      {"name": "Postman", "careerUrl": "https://www.postman.com/company/careers/", "type": "devtools"},
+      {"name": "Hasura", "careerUrl": "https://hasura.io/careers/", "type": "devtools"},
+      {"name": "CleverTap", "careerUrl": "https://www.clevertap.com/company/careers/", "type": "martech"},
+      {"name": "MoEngage", "careerUrl": "https://www.moengage.com/careers/", "type": "martech"},
+      {"name": "WebEngage", "careerUrl": "https://webengage.com/careers/", "type": "martech"},
+      {"name": "Gupshup", "careerUrl": "https://www.gupshup.io/careers", "type": "messaging"},
+      {"name": "Exotel", "careerUrl": "https://exotel.com/careers/", "type": "cpaas"},
+      {"name": "LeadSquared", "careerUrl": "https://www.leadsquared.com/careers/", "type": "crm"},
+      {"name": "Darwinbox", "careerUrl": "https://www.darwinbox.com/careers", "type": "hrtech"},
+      {"name": "Keka", "careerUrl": "https://www.keka.com/careers", "type": "hrtech"},
+      {"name": "Whatfix", "careerUrl": "https://whatfix.com/company/careers/", "type": "dap"},
+      {"name": "Leena AI", "careerUrl": "https://leena.ai/careers/", "type": "ai"},
+      {"name": "Yellow.ai", "careerUrl": "https://yellow.ai/careers/", "type": "ai"},
+      {"name": "MindTickle", "careerUrl": "https://www.mindtickle.com/careers/", "type": "sales"},
+      {"name": "Netcore", "careerUrl": "https://netcorecloud.com/careers/", "type": "martech"},
+      {"name": "Freshworks Bangalore", "careerUrl": "https://www.freshworks.com/company/careers/", "type": "saas"}
+    ],
+    "tier2_services": [
+      {"name": "TCS Bangalore", "careerUrl": "https://www.tcs.com/careers", "type": "services"},
+      {"name": "Infosys Bangalore", "careerUrl": "https://www.infosys.com/careers/", "type": "services"},
+      {"name": "Wipro Bangalore", "careerUrl": "https://careers.wipro.com/", "type": "services"},
+      {"name": "HCL Bangalore", "careerUrl": "https://www.hcltech.com/careers", "type": "services"},
+      {"name": "Tech Mahindra Bangalore", "careerUrl": "https://careers.techmahindra.com/", "type": "services"},
+      {"name": "Mindtree Bangalore", "careerUrl": "https://www.mindtree.com/careers", "type": "services"},
+      {"name": "Mphasis Bangalore", "careerUrl": "https://www.mphasis.com/careers.html", "type": "services"},
+      {"name": "L&T Infotech", "careerUrl": "https://www.ltimindtree.com/careers/", "type": "services"},
+      {"name": "Persistent Systems", "careerUrl": "https://www.persistent.com/careers/", "type": "services"}
+    ]
+  },
+  "hyderabad": {
+    "tier1": [
+      {
+        "name": "Microsoft Hyderabad",
+        "careerUrl": "https://careers.microsoft.com/",
+        "type": "tech",
+        "employees": "10000+"
+      },
+      {
+        "name": "Google Hyderabad",
+        "careerUrl": "https://careers.google.com/",
+        "type": "tech",
+        "employees": "5000+"
+      },
+      {
+        "name": "Amazon Hyderabad",
+        "careerUrl": "https://www.amazon.jobs/en/locations/hyderabad-india",
+        "type": "tech",
+        "employees": "20000+"
+      },
+      {
+        "name": "Apple Hyderabad",
+        "careerUrl": "https://www.apple.com/careers/in/",
+        "type": "tech",
+        "employees": "5000+"
+      },
+      {
+        "name": "Meta Hyderabad",
+        "careerUrl": "https://www.metacareers.com/",
+        "type": "tech",
+        "employees": "2000+"
+      },
+      {
+        "name": "Salesforce Hyderabad",
+        "careerUrl": "https://www.salesforce.com/company/careers/",
+        "type": "saas",
+        "employees": "3000+"
+      },
+      {
+        "name": "ServiceNow Hyderabad",
+        "careerUrl": "https://www.servicenow.com/careers.html",
+        "type": "saas",
+        "employees": "2000+"
+      },
+      {
+        "name": "Uber Hyderabad",
+        "careerUrl": "https://www.uber.com/careers/",
+        "type": "tech",
+        "employees": "1500+"
+      },
+      {
+        "name": "PayPal Hyderabad",
+        "careerUrl": "https://careers.pypl.com/",
+        "type": "fintech",
+        "employees": "2000+"
+      },
+      {
+        "name": "Capital One Hyderabad",
+        "careerUrl": "https://www.capitalonecareers.com/",
+        "type": "fintech",
+        "employees": "2000+"
+      }
+    ],
+    "tier2": [
+      {"name": "Qualcomm Hyderabad", "careerUrl": "https://www.qualcomm.com/company/careers", "type": "semiconductor"},
+      {"name": "AMD Hyderabad", "careerUrl": "https://careers.amd.com/", "type": "semiconductor"},
+      {"name": "Micron Hyderabad", "careerUrl": "https://www.micron.com/careers", "type": "semiconductor"},
+      {"name": "Zenoti", "careerUrl": "https://www.zenoti.com/careers/", "type": "saas"},
+      {"name": "GreyOrange", "careerUrl": "https://www.greyorange.com/careers/", "type": "robotics"},
+      {"name": "CommVault", "careerUrl": "https://www.commvault.com/careers", "type": "data"},
+      {"name": "Pegasystems", "careerUrl": "https://www.pega.com/about/careers", "type": "enterprise"},
+      {"name": "ADP Hyderabad", "careerUrl": "https://jobs.adp.com/", "type": "hrtech"},
+      {"name": "TCS Hyderabad", "careerUrl": "https://www.tcs.com/careers", "type": "services"},
+      {"name": "Infosys Hyderabad", "careerUrl": "https://www.infosys.com/careers/", "type": "services"}
+    ]
+  },
+  "pune": {
+    "tier1": [
+      {
+        "name": "Persistent Systems",
+        "careerUrl": "https://www.persistent.com/careers/",
+        "type": "product",
+        "employees": "20000+"
+      },
+      {
+        "name": "PubMatic",
+        "careerUrl": "https://pubmatic.com/careers/",
+        "type": "adtech",
+        "employees": "1000+"
+      },
+      {
+        "name": "TIBCO",
+        "careerUrl": "https://www.tibco.com/company/careers",
+        "type": "enterprise",
+        "employees": "1500+"
+      },
+      {
+        "name": "Veritas",
+        "careerUrl": "https://www.veritas.com/company/careers",
+        "type": "data",
+        "employees": "2000+"
+      },
+      {
+        "name": "Barclays Pune",
+        "careerUrl": "https://www.barclays.in/careers/",
+        "type": "banking",
+        "employees": "5000+"
+      },
+      {
+        "name": "HSBC Pune",
+        "careerUrl": "https://www.hsbc.com/careers",
+        "type": "banking",
+        "employees": "10000+"
+      },
+      {
+        "name": "Mastercard Pune",
+        "careerUrl": "https://www.mastercard.us/en-us/vision/who-we-are/careers.html",
+        "type": "fintech",
+        "employees": "3000+"
+      },
+      {
+        "name": "Amdocs Pune",
+        "careerUrl": "https://www.amdocs.com/careers",
+        "type": "telecom",
+        "employees": "5000+"
+      }
+    ],
+    "tier2": [
+      {"name": "Icertis", "careerUrl": "https://www.icertis.com/company/careers/", "type": "saas"},
+      {"name": "MindTickle Pune", "careerUrl": "https://www.mindtickle.com/careers/", "type": "saas"},
+      {"name": "Druva Pune", "careerUrl": "https://www.druva.com/company/careers/", "type": "data"},
+      {"name": "TCS Pune", "careerUrl": "https://www.tcs.com/careers", "type": "services"},
+      {"name": "Infosys Pune", "careerUrl": "https://www.infosys.com/careers/", "type": "services"},
+      {"name": "Wipro Pune", "careerUrl": "https://careers.wipro.com/", "type": "services"},
+      {"name": "Cognizant Pune", "careerUrl": "https://careers.cognizant.com/", "type": "services"},
+      {"name": "Syntel Pune", "careerUrl": "https://www.atos.net/en/careers", "type": "services"},
+      {"name": "Quick Heal", "careerUrl": "https://www.quickheal.com/careers", "type": "security"},
+      {"name": "Cybage", "careerUrl": "https://www.cybage.com/careers", "type": "services"}
+    ]
+  },
+  "delhi_ncr": {
+    "tier1_unicorns": [
+      {
+        "name": "Zomato",
+        "careerUrl": "https://www.zomato.com/careers",
+        "type": "foodtech",
+        "employees": "5000+"
+      },
+      {
+        "name": "PolicyBazaar",
+        "careerUrl": "https://www.policybazaar.com/careers/",
+        "type": "insurtech",
+        "employees": "10000+"
+      },
+      {
+        "name": "MakeMyTrip",
+        "careerUrl": "https://careers.makemytrip.com/",
+        "type": "travel",
+        "employees": "3000+"
+      },
+      {
+        "name": "OYO",
+        "careerUrl": "https://www.oyorooms.com/careers/",
+        "type": "hospitality",
+        "employees": "5000+"
+      },
+      {
+        "name": "Paytm",
+        "careerUrl": "https://paytm.com/careers/",
+        "type": "fintech",
+        "employees": "10000+"
+      },
+      {
+        "name": "Cars24",
+        "careerUrl": "https://www.cars24.com/careers/",
+        "type": "auto",
+        "employees": "3000+"
+      },
+      {
+        "name": "Spinny",
+        "careerUrl": "https://www.spinny.com/careers/",
+        "type": "auto",
+        "employees": "2000+"
+      },
+      {
+        "name": "CarDekho",
+        "careerUrl": "https://www.cardekho.com/careers",
+        "type": "auto",
+        "employees": "3000+"
+      },
+      {
+        "name": "Lenskart",
+        "careerUrl": "https://www.lenskart.com/careers",
+        "type": "d2c",
+        "employees": "5000+"
+      },
+      {
+        "name": "Nykaa",
+        "careerUrl": "https://www.nykaa.com/careers",
+        "type": "d2c",
+        "employees": "3000+"
+      },
+      {
+        "name": "boAt",
+        "careerUrl": "https://www.boat-lifestyle.com/pages/careers",
+        "type": "d2c",
+        "employees": "1000+"
+      },
+      {
+        "name": "Delhivery",
+        "careerUrl": "https://www.delhivery.com/careers/",
+        "type": "logistics",
+        "employees": "10000+"
+      }
+    ],
+    "tier2": [
+      {"name": "HackerRank", "careerUrl": "https://www.hackerrank.com/careers", "type": "devtools"},
+      {"name": "Scaler Academy", "careerUrl": "https://www.scaler.com/careers/", "type": "edtech"},
+      {"name": "upGrad Delhi", "careerUrl": "https://www.upgrad.com/careers/", "type": "edtech"},
+      {"name": "Coding Ninjas", "careerUrl": "https://www.codingninjas.com/careers", "type": "edtech"},
+      {"name": "InterviewBit", "careerUrl": "https://www.interviewbit.com/careers/", "type": "edtech"},
+      {"name": "Adobe Noida", "careerUrl": "https://www.adobe.com/careers.html", "type": "software"},
+      {"name": "Samsung Noida", "careerUrl": "https://www.samsung.com/in/aboutsamsung/careers/", "type": "tech"},
+      {"name": "HCL Noida", "careerUrl": "https://www.hcltech.com/careers", "type": "services"},
+      {"name": "TCS Noida", "careerUrl": "https://www.tcs.com/careers", "type": "services"},
+      {"name": "Infosys Gurgaon", "careerUrl": "https://www.infosys.com/careers/", "type": "services"}
+    ]
+  },
+  "coimbatore": {
+    "companies": [
+      {
+        "name": "Payoda",
+        "careerUrl": "https://payoda.com/careers/",
+        "type": "digital",
+        "employees": "500+"
+      },
+      {
+        "name": "Ideas2IT",
+        "careerUrl": "https://www.ideas2it.com/careers/",
+        "type": "product",
+        "employees": "500+"
+      },
+      {
+        "name": "Kovai.co",
+        "careerUrl": "https://www.kovai.co/careers",
+        "type": "integration",
+        "employees": "200+"
+      },
+      {
+        "name": "ClaySys Technologies",
+        "careerUrl": "https://www.claysys.com/careers/",
+        "type": "automation",
+        "employees": "200+"
+      },
+      {
+        "name": "Poornam Info Vision",
+        "careerUrl": "https://www.poornam.com/careers/",
+        "type": "services",
+        "employees": "500+"
+      },
+      {
+        "name": "Perfomatix",
+        "careerUrl": "https://perfomatix.com/careers/",
+        "type": "agency",
+        "employees": "200+"
+      },
+      {
+        "name": "Experion Technologies",
+        "careerUrl": "https://experionglobal.com/careers/",
+        "type": "product",
+        "employees": "500+"
+      },
+      {
+        "name": "Aspire Systems Coimbatore",
+        "careerUrl": "https://www.aspiresys.com/careers/",
+        "type": "services",
+        "employees": "300+"
+      },
+      {
+        "name": "Calibraint",
+        "careerUrl": "https://www.calibraint.com/careers/",
+        "type": "agency",
+        "employees": "100+"
+      },
+      {
+        "name": "TechAffinity",
+        "careerUrl": "https://www.techaffinity.com/careers/",
+        "type": "agency",
+        "employees": "200+"
+      }
+    ]
+  },
+  "other_cities": {
+    "kochi": [
+      {"name": "UST Global", "careerUrl": "https://www.ust.com/en/careers", "type": "services"},
+      {"name": "Envestnet", "careerUrl": "https://www.envestnet.com/careers", "type": "fintech"},
+      {"name": "IBS Software", "careerUrl": "https://www.ibsplc.com/careers", "type": "travel"},
+      {"name": "Fingent", "careerUrl": "https://www.fingent.com/careers/", "type": "services"},
+      {"name": "TCS Kochi", "careerUrl": "https://www.tcs.com/careers", "type": "services"},
+      {"name": "Infosys Kochi", "careerUrl": "https://www.infosys.com/careers/", "type": "services"}
+    ],
+    "trivandrum": [
+      {"name": "UST Trivandrum", "careerUrl": "https://www.ust.com/en/careers", "type": "services"},
+      {"name": "TCS Trivandrum", "careerUrl": "https://www.tcs.com/careers", "type": "services"},
+      {"name": "Infosys Trivandrum", "careerUrl": "https://www.infosys.com/careers/", "type": "services"},
+      {"name": "Envestnet Trivandrum", "careerUrl": "https://www.envestnet.com/careers", "type": "fintech"}
+    ],
+    "ahmedabad": [
+      {"name": "Crest Data Systems", "careerUrl": "https://www.crestdatasys.com/careers/", "type": "data"},
+      {"name": "Tatvasoft", "careerUrl": "https://www.tatvasoft.com/careers/", "type": "services"},
+      {"name": "Simform", "careerUrl": "https://www.simform.com/careers/", "type": "agency"},
+      {"name": "TCS Ahmedabad", "careerUrl": "https://www.tcs.com/careers", "type": "services"}
+    ],
+    "jaipur": [
+      {"name": "Girnar Software", "careerUrl": "https://www.cardekho.com/careers", "type": "auto"},
+      {"name": "Paytm Jaipur", "careerUrl": "https://paytm.com/careers/", "type": "fintech"},
+      {"name": "Publicis Sapient", "careerUrl": "https://www.publicissapient.com/careers", "type": "consulting"}
+    ]
+  }
+}

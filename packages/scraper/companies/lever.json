@@ -3,6 +3,7 @@
     {"slug": "cred", "name": "CRED", "careerPageUrl": "https://careers.cred.club"},
     {"slug": "paytm", "name": "Paytm", "careerPageUrl": "https://paytm.com/careers"},
     {"slug": "meesho", "name": "Meesho", "careerPageUrl": "https://careers.meesho.com"},
-    {"slug": "spotify", "name": "Spotify", "careerPageUrl": "https://www.lifeatspotify.com/jobs"}
+    {"slug": "spotify", "name": "Spotify", "careerPageUrl": "https://www.lifeatspotify.com/jobs"},
+    {"slug": "mindtickle", "name": "MindTickle", "careerPageUrl": "https://www.mindtickle.com/careers/"}
   ]
 }

@@ -48,6 +48,8 @@
     {"slug": "hackerrank", "name": "HackerRank", "careerPageUrl": "https://www.hackerrank.com/careers"},
     {"slug": "samsara", "name": "Samsara", "careerPageUrl": "https://www.samsara.com/company/careers"},
     {"slug": "amplitude", "name": "Amplitude", "careerPageUrl": "https://amplitude.com/careers"},
-    {"slug": "vonage", "name": "Vonage", "careerPageUrl": "https://www.vonage.com/careers"}
+    {"slug": "vonage", "name": "Vonage", "careerPageUrl": "https://www.vonage.com/careers"},
+    
+    {"slug": "razorpaysoftwareprivatelimited", "name": "Razorpay", "careerPageUrl": "https://razorpay.com/jobs/"}
   ]
 }
