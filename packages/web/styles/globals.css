@@ -30,7 +30,7 @@
   --color-text-inverse: theme('colors.neutral.0');
   
   --color-border-primary: theme('colors.neutral.200');
-  --color-border-secondary: theme('colors.neutral.150');
+  --color-border-secondary: theme('colors.neutral.100');
   --color-border-focus: theme('colors.brand.500');
   
   --shadow-elevation-1: 0 1px 2px 0 rgb(0 0 0 / 0.04);
@@ -59,7 +59,7 @@
   --color-text-inverse: theme('colors.neutral.900');
   
   --color-border-primary: theme('colors.neutral.800');
-  --color-border-secondary: theme('colors.neutral.850');
+  --color-border-secondary: theme('colors.neutral.800');
   --color-border-focus: theme('colors.brand.400');
   
   --shadow-elevation-1: 0 1px 2px 0 rgb(0 0 0 / 0.2);

@@ -13,22 +13,10 @@ const config: Config = {
       // COLORS
       // ============================================
       colors: {
-        // Primary (Brand Blue)
-        primary: {
-          50: '#E3F2FD',
-          100: '#BBDEFB',
-          200: '#90CAF9',
-          300: '#64B5F6',
-          400: '#42A5F5',
-          500: '#2196F3',
-          600: '#1E88E5',
-          700: '#1976D2', // DEFAULT
-          800: '#1565C0',
-          900: '#0D47A1',
-          950: '#0A2E6E',
-        },
-        // Neutral (Slate-based)
-        gray: {
+        // Neutral (Slate-based) - Used throughout the UI
+        // neutral-0 is pure white, scales to dark
+        neutral: {
+          0: '#FFFFFF',
           50: '#F8FAFC',
           100: '#F1F5F9',
           200: '#E2E8F0',
@@ -37,30 +25,114 @@ const config: Config = {
           500: '#64748B',
           600: '#475569',
           700: '#334155',
+          750: '#293548', // Custom intermediate
           800: '#1E293B',
+          850: '#172033', // Custom intermediate
           900: '#0F172A',
           950: '#020617',
         },
-        // Semantic
+        // Brand (Blue) - Primary brand color
+        brand: {
+          50: '#EFF6FF',
+          100: '#DBEAFE',
+          200: '#BFDBFE',
+          300: '#93C5FD',
+          400: '#60A5FA',
+          500: '#3B82F6',
+          600: '#2563EB',
+          700: '#1D4ED8',
+          800: '#1E40AF',
+          900: '#1E3A8A',
+          950: '#172554',
+        },
+        // Accent (Amber/Orange) - For highlights and CTAs
+        accent: {
+          50: '#FFFBEB',
+          100: '#FEF3C7',
+          200: '#FDE68A',
+          300: '#FCD34D',
+          400: '#FBBF24',
+          500: '#F59E0B',
+          600: '#D97706',
+          700: '#B45309',
+          800: '#92400E',
+          900: '#78350F',
+          950: '#451A03',
+        },
+        // Primary (alias for brand for compatibility)
+        primary: {
+          50: '#EFF6FF',
+          100: '#DBEAFE',
+          200: '#BFDBFE',
+          300: '#93C5FD',
+          400: '#60A5FA',
+          500: '#3B82F6',
+          600: '#2563EB',
+          700: '#1D4ED8',
+          800: '#1E40AF',
+          900: '#1E3A8A',
+          950: '#172554',
+        },
+        // Semantic colors - Full scales for badges and states
         success: {
-          light: '#E8F5E9',
-          DEFAULT: '#4CAF50',
-          dark: '#2E7D32',
+          50: '#F0FDF4',
+          100: '#DCFCE7',
+          200: '#BBF7D0',
+          300: '#86EFAC',
+          400: '#4ADE80',
+          500: '#22C55E',
+          600: '#16A34A',
+          700: '#15803D',
+          800: '#166534',
+          900: '#14532D',
+          light: '#DCFCE7',
+          DEFAULT: '#22C55E',
+          dark: '#15803D',
         },
         warning: {
-          light: '#FFF8E1',
-          DEFAULT: '#FFC107',
-          dark: '#FF8F00',
+          50: '#FFFBEB',
+          100: '#FEF3C7',
+          200: '#FDE68A',
+          300: '#FCD34D',
+          400: '#FBBF24',
+          500: '#F59E0B',
+          600: '#D97706',
+          700: '#B45309',
+          800: '#92400E',
+          900: '#78350F',
+          light: '#FEF3C7',
+          DEFAULT: '#F59E0B',
+          dark: '#B45309',
         },
         error: {
-          light: '#FFEBEE',
-          DEFAULT: '#F44336',
-          dark: '#C62828',
+          50: '#FEF2F2',
+          100: '#FEE2E2',
+          200: '#FECACA',
+          300: '#FCA5A5',
+          400: '#F87171',
+          500: '#EF4444',
+          600: '#DC2626',
+          700: '#B91C1C',
+          800: '#991B1B',
+          900: '#7F1D1D',
+          light: '#FEE2E2',
+          DEFAULT: '#EF4444',
+          dark: '#B91C1C',
         },
         info: {
-          light: '#E0F7FA',
-          DEFAULT: '#00BCD4',
-          dark: '#00838F',
+          50: '#F0F9FF',
+          100: '#E0F2FE',
+          200: '#BAE6FD',
+          300: '#7DD3FC',
+          400: '#38BDF8',
+          500: '#0EA5E9',
+          600: '#0284C7',
+          700: '#0369A1',
+          800: '#075985',
+          900: '#0C4A6E',
+          light: '#E0F2FE',
+          DEFAULT: '#0EA5E9',
+          dark: '#0369A1',
         },
       },
 
@@ -136,6 +208,20 @@ const config: Config = {
         'card': '0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06)',
         'card-hover': '0 10px 20px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.06)',
         'inner': 'inset 0 2px 4px rgba(0, 0, 0, 0.06)',
+        'accent': '0 4px 14px rgba(245, 158, 11, 0.3)', // Amber glow for accent buttons
+      },
+
+      // ============================================
+      // Z-INDEX
+      // ============================================
+      zIndex: {
+        'dropdown': '1000',
+        'sticky': '1020',
+        'fixed': '1030',
+        'modal-backdrop': '1040',
+        'modal': '1050',
+        'popover': '1060',
+        'tooltip': '1070',
       },
 
       // ============================================
@@ -195,8 +281,9 @@ const config: Config = {
       // LAYOUT
       // ============================================
       maxWidth: {
-        '8xl': '88rem',   // 1408px
-        '9xl': '96rem',   // 1536px
+        'content': '80rem',   // 1280px - Main content width
+        '8xl': '88rem',       // 1408px
+        '9xl': '96rem',       // 1536px
       },
       screens: {
         'xs': '475px',
@@ -205,24 +292,54 @@ const config: Config = {
   },
   plugins: [
     // Custom plugin for component utilities
-    function({ addComponents, theme }: { addComponents: Function; theme: Function }) {
+    function({ addComponents, addUtilities, theme }: { addComponents: Function; addUtilities: Function; theme: Function }) {
+      // Component classes
       addComponents({
         // Focus ring utility
         '.focus-ring': {
           '&:focus': {
             outline: 'none',
-            boxShadow: `0 0 0 2px ${theme('colors.white')}, 0 0 0 4px ${theme('colors.primary.500')}`,
+            boxShadow: `0 0 0 2px ${theme('colors.white')}, 0 0 0 4px ${theme('colors.brand.500')}`,
           },
         },
         '.focus-ring-inset': {
           '&:focus': {
             outline: 'none',
-            boxShadow: `inset 0 0 0 2px ${theme('colors.primary.500')}`,
+            boxShadow: `inset 0 0 0 2px ${theme('colors.brand.500')}`,
           },
         },
+        // Container utility
+        '.container-main': {
+          width: '100%',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          paddingLeft: '1rem',
+          paddingRight: '1rem',
+          maxWidth: '80rem', // 1280px
+          '@screen sm': {
+            paddingLeft: '1.5rem',
+            paddingRight: '1.5rem',
+          },
+          '@screen lg': {
+            paddingLeft: '2rem',
+            paddingRight: '2rem',
+          },
+        },
+      })
+      
+      // Utility classes
+      addUtilities({
         // Text balance utility
         '.text-balance': {
           textWrap: 'balance',
+        },
+        // Skeleton utility
+        '.skeleton': {
+          backgroundColor: theme('colors.neutral.200'),
+          animation: 'skeleton 1.5s ease-in-out infinite',
+        },
+        '.dark .skeleton': {
+          backgroundColor: theme('colors.neutral.700'),
         },
       })
     },
