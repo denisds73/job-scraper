@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/Button'
 import { Header, Footer } from '@/components/layout/Header'
 import { FilterSidebar, ActiveFiltersBar, type FilterGroup } from '@/components/layout/FilterSidebar'
 import { JobList, type Job } from '@/components/jobs/JobCard'
+import { ClientOnly } from '@/components/shared'
 import { useJobSearch, useFilters, formatLocationType, formatEmploymentType, formatExperienceLevel } from '@/hooks'
 import type { JobSearchParams, JobListItem } from '@/lib/api'
 
@@ -431,15 +432,35 @@ export default function SearchPage() {
             ========================================== */}
         <div className="container-main py-6">
           <div className="flex gap-6">
-            {/* Sidebar */}
-            <FilterSidebar
-              filters={filterGroups}
-              selectedFilters={selectedFilters}
-              onFilterChange={handleFilterChange}
-              onClearAll={handleClearFilters}
-              isOpen={isFilterOpen}
-              onClose={() => setIsFilterOpen(false)}
-            />
+            {/* Sidebar - wrapped in ClientOnly to prevent hydration mismatch */}
+            <ClientOnly
+              fallback={
+                <aside className="hidden lg:block lg:w-64 xl:w-72 lg:shrink-0 bg-neutral-0 dark:bg-neutral-900 border-r border-neutral-200 dark:border-neutral-800">
+                  <div className="p-4 space-y-4">
+                    <div className="h-6 bg-neutral-100 dark:bg-neutral-800 rounded animate-pulse" />
+                    {[1, 2, 3, 4].map(i => (
+                      <div key={i} className="space-y-2">
+                        <div className="h-4 w-24 bg-neutral-100 dark:bg-neutral-800 rounded animate-pulse" />
+                        <div className="space-y-1">
+                          {[1, 2, 3].map(j => (
+                            <div key={j} className="h-8 bg-neutral-50 dark:bg-neutral-800/50 rounded animate-pulse" />
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </aside>
+              }
+            >
+              <FilterSidebar
+                filters={filterGroups}
+                selectedFilters={selectedFilters}
+                onFilterChange={handleFilterChange}
+                onClearAll={handleClearFilters}
+                isOpen={isFilterOpen}
+                onClose={() => setIsFilterOpen(false)}
+              />
+            </ClientOnly>
 
             {/* Results */}
             <main className="flex-1 min-w-0">
